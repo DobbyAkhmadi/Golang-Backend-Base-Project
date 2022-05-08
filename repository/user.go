@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"backend/models"
 	"fmt"
-	"github.com/hojabri/backend/models"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

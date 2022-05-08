@@ -1,10 +1,10 @@
 package handlers
 
 import (
+	"backend/models"
+	"backend/repository"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/hojabri/backend/models"
-	"github.com/hojabri/backend/repository"
 	"net/http"
 	"strconv"
 )
@@ -18,21 +18,21 @@ func init() {
 // GetAllUsers gets all repository information
 func GetAllUsers(c *fiber.Ctx) error {
 	users := userRepository.FindAll()
-	
+
 	resp := models.Response{
 		Code:    http.StatusOK,
 		Body:    users,
 		Title:   "GetAllUsers",
 		Message: "All users",
 	}
-	
+
 	return c.Status(resp.Code).JSON(resp)
 }
 
 // GetSingleUser Gets single user information
 func GetSingleUser(c *fiber.Ctx) error {
 	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
-	
+
 	if err != nil {
 		errorResp := models.Response{
 			Code:    http.StatusNotAcceptable,
@@ -40,10 +40,10 @@ func GetSingleUser(c *fiber.Ctx) error {
 			Title:   "NotAcceptable",
 			Message: "Error in getting user information",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	user, err := userRepository.FindByID(uint(id))
 	if err != nil {
 		errorResp := models.Response{
@@ -52,10 +52,10 @@ func GetSingleUser(c *fiber.Ctx) error {
 			Title:   "NotFound",
 			Message: "Error in getting user information",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	if user == nil {
 		errorResp := models.Response{
 			Code:    http.StatusNotFound,
@@ -63,10 +63,10 @@ func GetSingleUser(c *fiber.Ctx) error {
 			Title:   "NotFound",
 			Message: "Error in finding user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	resp := models.Response{
 		Code:    http.StatusOK,
 		Body:    user,
@@ -74,15 +74,15 @@ func GetSingleUser(c *fiber.Ctx) error {
 		Message: "User information",
 	}
 	return c.Status(resp.Code).JSON(resp)
-	
+
 }
 
 // AddNewUser adds new user
 func AddNewUser(c *fiber.Ctx) error {
 	user := &models.User{}
-	
+
 	err := c.BodyParser(user)
-	
+
 	if err != nil {
 		errorResp := models.Response{
 			Code:    http.StatusNotAcceptable,
@@ -90,10 +90,10 @@ func AddNewUser(c *fiber.Ctx) error {
 			Title:   "Error",
 			Message: "Error in parsing user body information",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	id, err := userRepository.Save(*user)
 	if err != nil {
 		errorResp := models.Response{
@@ -102,10 +102,10 @@ func AddNewUser(c *fiber.Ctx) error {
 			Title:   "InternalServerError",
 			Message: "Error in adding new user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	user, err = userRepository.FindByID(id)
 	if err != nil {
 		errorResp := models.Response{
@@ -114,7 +114,7 @@ func AddNewUser(c *fiber.Ctx) error {
 			Title:   "InternalServerError",
 			Message: "Error in finding newly added user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 	if user == nil {
@@ -124,10 +124,10 @@ func AddNewUser(c *fiber.Ctx) error {
 			Title:   "NotFound",
 			Message: "Error in finding user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	resp := models.Response{
 		Code:    http.StatusOK,
 		Body:    user,
@@ -135,13 +135,13 @@ func AddNewUser(c *fiber.Ctx) error {
 		Message: "new user added successfully",
 	}
 	return c.Status(resp.Code).JSON(resp)
-	
+
 }
 
 // UpdateUser updates a user by user id
 func UpdateUser(c *fiber.Ctx) error {
 	user := &models.User{}
-	
+
 	err := c.BodyParser(user)
 	if err != nil {
 		errorResp := models.Response{
@@ -150,10 +150,10 @@ func UpdateUser(c *fiber.Ctx) error {
 			Title:   "NotAcceptable",
 			Message: "Error in parsing user body information",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
 	if err != nil {
 		errorResp := models.Response{
@@ -162,10 +162,10 @@ func UpdateUser(c *fiber.Ctx) error {
 			Title:   "NotAcceptable",
 			Message: "Error in parsing user ID. (it should be an integer)",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	updatingUser, err := userRepository.FindByID(uint(id))
 	if err != nil {
 		errorResp := models.Response{
@@ -174,10 +174,10 @@ func UpdateUser(c *fiber.Ctx) error {
 			Title:   "NotFound",
 			Message: "Error in getting user information",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	if updatingUser == nil {
 		errorResp := models.Response{
 			Code:    http.StatusNotFound,
@@ -185,12 +185,12 @@ func UpdateUser(c *fiber.Ctx) error {
 			Title:   "NotFound",
 			Message: "Error in finding user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	user.ID = uint(id)
-	
+
 	err = userRepository.Update(*user)
 	if err != nil {
 		errorResp := models.Response{
@@ -199,10 +199,10 @@ func UpdateUser(c *fiber.Ctx) error {
 			Title:   "InternalServerError",
 			Message: "Error in updating user information",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	user, err = userRepository.FindByID(uint(id))
 	if err != nil {
 		errorResp := models.Response{
@@ -211,10 +211,10 @@ func UpdateUser(c *fiber.Ctx) error {
 			Title:   "InternalServerError",
 			Message: "Error in finding newly updated user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	if user == nil {
 		errorResp := models.Response{
 			Code:    http.StatusNotFound,
@@ -222,10 +222,10 @@ func UpdateUser(c *fiber.Ctx) error {
 			Title:   "NotFound",
 			Message: "Error in finding user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	resp := models.Response{
 		Code:    http.StatusOK,
 		Body:    user,
@@ -238,7 +238,7 @@ func UpdateUser(c *fiber.Ctx) error {
 // DeleteUser deletes the user from db
 func DeleteUser(c *fiber.Ctx) error {
 	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
-	
+
 	if err != nil {
 		errorResp := models.Response{
 			Code:    http.StatusNotAcceptable,
@@ -246,10 +246,10 @@ func DeleteUser(c *fiber.Ctx) error {
 			Title:   "Error",
 			Message: "Error in getting user information",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	user, err := userRepository.FindByID(uint(id))
 	if err != nil {
 		errorResp := models.Response{
@@ -258,10 +258,10 @@ func DeleteUser(c *fiber.Ctx) error {
 			Title:   "InternalServerError",
 			Message: "Error in finding user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	if user == nil {
 		errorResp := models.Response{
 			Code:    http.StatusNotFound,
@@ -269,10 +269,10 @@ func DeleteUser(c *fiber.Ctx) error {
 			Title:   "NotFound",
 			Message: "Error in finding user",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	err = userRepository.Delete(*user)
 	if err != nil {
 		errorResp := models.Response{
@@ -281,10 +281,10 @@ func DeleteUser(c *fiber.Ctx) error {
 			Title:   "NotAcceptable",
 			Message: "Error in deleting user object",
 		}
-		
+
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
-	
+
 	resp := models.Response{
 		Code:    http.StatusOK,
 		Body:    "user deleted successfully",

@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"backend/models"
+	"backend/repository"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"github.com/hojabri/backend/models"
-	"github.com/hojabri/backend/repository"
 	"net/http"
 )
 
@@ -15,7 +15,16 @@ func init() {
 	companyRepository = repository.NewCompanyRepository()
 }
 
-// GetAllCompanies gets all repository information
+// GetAllCompanies godoc
+// @Summary      GetAllCompanies gets all repository information
+// @Description  GetAllCompanies gets all repository information
+// @Tags         Company
+// @Accept       json
+// @Produce      json
+// @Request
+// @Success      200  {object} 	models.Response{body=models.Company}
+// @Security 	 oauth2[identity_api]
+// @Router       /api/v1/company [get]
 func GetAllCompanies(c *fiber.Ctx) error {
 	companies := companyRepository.FindAll()
 
@@ -29,7 +38,19 @@ func GetAllCompanies(c *fiber.Ctx) error {
 	return c.Status(resp.Code).JSON(resp)
 }
 
-// GetSingleCompany Gets single company information
+// GetSingleCompany godoc
+// @Summary      GetSingleCompany Gets single company information
+// @Description  GetSingleCompany Gets single company information
+// @Tags         Company
+// @Accept       json
+// @Produce      json
+// @Request
+// @Param        id 		path 	string  	true  "id UUID"
+// @Success      200  {object} 	models.Response{body=models.Company}
+// @Failure 	 406  {object}  entity.ErrorResponse
+// @Failure 	 404  {object}  entity.ErrorResponse
+// @Security 	 oauth2[identity_api]
+// @Router       /api/v1/company/{id} [get]
 func GetSingleCompany(c *fiber.Ctx) error {
 	id, err := uuid.Parse(c.FormValue("id"))
 
@@ -77,7 +98,19 @@ func GetSingleCompany(c *fiber.Ctx) error {
 
 }
 
-// AddNewCompany adds new company
+// AddNewCompany godoc
+// @Summary      AddNewCompany adds new company
+// @Description  AddNewCompany adds new company
+// @Tags         Company
+// @Accept       json
+// @Produce      json
+// @Request
+// @Success      200  {object} 	models.Response{body=models.Company}
+// @Failure 	 406  {object}  entity.ErrorResponse
+// @Failure 	 404  {object}  entity.ErrorResponse
+// @Failure 	 500  {object}  entity.ErrorResponse
+// @Security 	 oauth2[identity_api]
+// @Router       /api/v1/company [post]
 func AddNewCompany(c *fiber.Ctx) error {
 	company := &models.Company{}
 
@@ -138,7 +171,19 @@ func AddNewCompany(c *fiber.Ctx) error {
 
 }
 
-// UpdateCompany updates a company by company id
+// UpdateCompany godoc
+// @Summary      UpdateCompany updates a company by company id
+// @Description  UpdateCompany updates a company by company id
+// @Tags         Company
+// @Accept       json
+// @Produce      json
+// @Request
+// @Success      200  {object} 	models.Response{body=models.Company}
+// @Failure 	 406  {object}  entity.ErrorResponse
+// @Failure 	 404  {object}  entity.ErrorResponse
+// @Failure 	 500  {object}  entity.ErrorResponse
+// @Security 	 oauth2[identity_api]
+// @Router       /api/v1/company [put]
 func UpdateCompany(c *fiber.Ctx) error {
 	company := &models.Company{}
 
@@ -235,7 +280,19 @@ func UpdateCompany(c *fiber.Ctx) error {
 	return c.Status(resp.Code).JSON(resp)
 }
 
-// DeleteCompany deletes the company from db
+// DeleteCompany godoc
+// @Summary      DeleteCompany deletes the company from db
+// @Description  DeleteCompany deletes the company from db
+// @Tags         Company
+// @Accept       json
+// @Produce      json
+// @Request
+// @Success      200  {object} 	models.Response{body=models.Company}
+// @Failure 	 406  {object}  entity.ErrorResponse
+// @Failure 	 404  {object}  entity.ErrorResponse
+// @Failure 	 500  {object}  entity.ErrorResponse
+// @Security 	 oauth2[identity_api]
+// @Router       /api/v1/company/{id} [delete]
 func DeleteCompany(c *fiber.Ctx) error {
 	id, err := uuid.Parse(c.Params("id"))
 

@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"backend/models"
+	"backend/repository"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"github.com/hojabri/backend/models"
-	"github.com/hojabri/backend/repository"
 	"net/http"
 )
 

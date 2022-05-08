@@ -1,9 +1,9 @@
 package repository
 
 import (
+	"backend/models"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/hojabri/backend/models"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

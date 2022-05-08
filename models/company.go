@@ -1,8 +1,8 @@
 package models
 
 import (
+	"backend/pkg/entity"
 	"github.com/google/uuid"
-	"github.com/hojabri/backend/pkg/entity"
 	"gorm.io/gorm"
 )
 

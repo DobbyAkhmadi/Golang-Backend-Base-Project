@@ -1,10 +1,10 @@
 package main
 
 import (
+	"backend/handlers"
+	"backend/repository"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/hojabri/backend/handlers"
-	"github.com/hojabri/backend/repository"
 	"log"
 )
 
