@@ -1,8 +1,8 @@
-package repository
+package entity
 
 import (
-	"backend/models"
-	"backend/pkg/config"
+	"backend/config"
+	"backend/internal/app/company/repository"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -17,7 +17,7 @@ var DB *gorm.DB
 var err error
 
 var (
-	Company = NewCompanyRepository()
+	Company = repository.NewCompanyRepository()
 )
 
 func Connect() (*gorm.DB, error) {
@@ -46,14 +46,5 @@ func Connect() (*gorm.DB, error) {
 		log.Fatal(err)
 		return nil, err
 	}
-
-	//Migrate repository structure into the db
-	err = DB.AutoMigrate(&models.User{})
-	err = DB.AutoMigrate(&models.Company{})
-	err = DB.AutoMigrate(&models.CompanyCategory{})
-	if err != nil {
-		return nil, err
-	}
-
 	return DB, nil
 }

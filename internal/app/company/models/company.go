@@ -22,6 +22,25 @@ type CompanyCategory struct {
 	entity.ModelTimestamp
 }
 
+func (v *Company) AutoMigrate(tx *gorm.DB) (err error) {
+	if !tx.Migrator().HasTable(&v) {
+		err = tx.AutoMigrate(&v)
+		if err != nil {
+			return err
+		}
+	}
+	return
+}
+func (v *CompanyCategory) AutoMigrate(tx *gorm.DB) (err error) {
+	if !tx.Migrator().HasTable(&v) {
+		err = tx.AutoMigrate(&v)
+		if err != nil {
+			return err
+		}
+	}
+	return
+}
+
 func (v *Company) BeforeCreate(tx *gorm.DB) (err error) {
 	return v.UUIDPrimaryKey.BeforeCreate(tx)
 }

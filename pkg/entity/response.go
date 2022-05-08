@@ -1,4 +1,4 @@
-package models
+package entity
 
 type Response struct {
 	Code    int         `json:"code,omitempty"`

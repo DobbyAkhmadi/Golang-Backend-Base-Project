@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"backend/models"
+	"backend/internal/app/company/models"
+	"backend/pkg/entity"
 	"fmt"
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
@@ -25,14 +26,19 @@ type companyCategoryDatabase struct {
 }
 
 func NewCompanyCategoryRepository() CompanyCategoryRepository {
-	if DB == nil {
-		_, err = Connect()
+	if entity.DB == nil {
+		connect, _ := entity.Connect()
+		if connect != nil {
+			log.Error(connect)
+		}
+		model := models.CompanyCategory{}
+		err := model.AutoMigrate(entity.DB)
 		if err != nil {
-			log.Error(err)
+			panic(err)
 		}
 	}
 	return &companyCategoryDatabase{
-		connection: DB,
+		connection: entity.DB,
 	}
 }
 

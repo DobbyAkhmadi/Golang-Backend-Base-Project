@@ -1,12 +1,13 @@
 package handlers
 
 import (
-	"backend/models"
-	"backend/repository"
+	"backend/internal/app/user/models"
+	"backend/internal/app/user/repository"
+	"backend/pkg/entity"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"net/http"
-	"strconv"
 )
 
 var userRepository repository.UserRepository
@@ -19,7 +20,7 @@ func init() {
 func GetAllUsers(c *fiber.Ctx) error {
 	users := userRepository.FindAll()
 
-	resp := models.Response{
+	resp := entity.Response{
 		Code:    http.StatusOK,
 		Body:    users,
 		Title:   "GetAllUsers",
@@ -31,10 +32,10 @@ func GetAllUsers(c *fiber.Ctx) error {
 
 // GetSingleUser Gets single user information
 func GetSingleUser(c *fiber.Ctx) error {
-	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
+	id, err := uuid.Parse(c.Params("id"))
 
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -44,9 +45,9 @@ func GetSingleUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	user, err := userRepository.FindByID(uint(id))
+	user, err := userRepository.FindByID(id)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotFound,
 			Body:    err.Error(),
 			Title:   "NotFound",
@@ -57,7 +58,7 @@ func GetSingleUser(c *fiber.Ctx) error {
 	}
 
 	if user == nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("user with id %d could not be found", id),
 			Title:   "NotFound",
@@ -67,7 +68,7 @@ func GetSingleUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := models.Response{
+	resp := entity.Response{
 		Code:    http.StatusOK,
 		Body:    user,
 		Title:   "OK",
@@ -84,7 +85,7 @@ func AddNewUser(c *fiber.Ctx) error {
 	err := c.BodyParser(user)
 
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "Error",
@@ -96,7 +97,7 @@ func AddNewUser(c *fiber.Ctx) error {
 
 	id, err := userRepository.Save(*user)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -108,7 +109,7 @@ func AddNewUser(c *fiber.Ctx) error {
 
 	user, err = userRepository.FindByID(id)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -118,7 +119,7 @@ func AddNewUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 	if user == nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("user with id %d could not be found", id),
 			Title:   "NotFound",
@@ -128,7 +129,7 @@ func AddNewUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := models.Response{
+	resp := entity.Response{
 		Code:    http.StatusOK,
 		Body:    user,
 		Title:   "OK",
@@ -144,7 +145,7 @@ func UpdateUser(c *fiber.Ctx) error {
 
 	err := c.BodyParser(user)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -154,9 +155,9 @@ func UpdateUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
+	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -166,9 +167,9 @@ func UpdateUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	updatingUser, err := userRepository.FindByID(uint(id))
+	updatingUser, err := userRepository.FindByID(id)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotFound,
 			Body:    err.Error(),
 			Title:   "NotFound",
@@ -179,7 +180,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	}
 
 	if updatingUser == nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("user with id %d could not be found", id),
 			Title:   "NotFound",
@@ -189,11 +190,11 @@ func UpdateUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	user.ID = uint(id)
+	user.ID = id
 
 	err = userRepository.Update(*user)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -203,9 +204,9 @@ func UpdateUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	user, err = userRepository.FindByID(uint(id))
+	user, err = userRepository.FindByID(id)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -216,7 +217,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	}
 
 	if user == nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("user with id %d could not be found", id),
 			Title:   "NotFound",
@@ -226,7 +227,7 @@ func UpdateUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := models.Response{
+	resp := entity.Response{
 		Code:    http.StatusOK,
 		Body:    user,
 		Title:   "UpdateUser",
@@ -237,10 +238,10 @@ func UpdateUser(c *fiber.Ctx) error {
 
 // DeleteUser deletes the user from db
 func DeleteUser(c *fiber.Ctx) error {
-	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
+	id, err := uuid.Parse(c.Params("id"))
 
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "Error",
@@ -250,9 +251,9 @@ func DeleteUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	user, err := userRepository.FindByID(uint(id))
+	user, err := userRepository.FindByID(id)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -263,7 +264,7 @@ func DeleteUser(c *fiber.Ctx) error {
 	}
 
 	if user == nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("user with id %d could not be found", id),
 			Title:   "NotFound",
@@ -275,7 +276,7 @@ func DeleteUser(c *fiber.Ctx) error {
 
 	err = userRepository.Delete(*user)
 	if err != nil {
-		errorResp := models.Response{
+		errorResp := entity.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -285,7 +286,7 @@ func DeleteUser(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := models.Response{
+	resp := entity.Response{
 		Code:    http.StatusOK,
 		Body:    "user deleted successfully",
 		Title:   "OK",

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"backend/handlers"
-	"backend/repository"
+	"backend/internal/app/company/handlers"
+	handlers2 "backend/internal/app/user/handlers"
+	"backend/pkg/entity"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"log"
@@ -11,7 +12,7 @@ import (
 func main() {
 
 	// Connect to database
-	_, err := repository.Connect()
+	_, err := entity.Connect()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,11 +29,11 @@ func main() {
 	// Group User related APIs
 	userGroup := app.Group("/api/v1/user")
 
-	userGroup.Get("/", handlers.GetAllUsers)
-	userGroup.Get("/:id", handlers.GetSingleUser)
-	userGroup.Post("/", handlers.AddNewUser)
-	userGroup.Put("/:id", handlers.UpdateUser)
-	userGroup.Delete("/:id", handlers.DeleteUser)
+	userGroup.Get("/", handlers2.GetAllUsers)
+	userGroup.Get("/:id", handlers2.GetSingleUser)
+	userGroup.Post("/", handlers2.AddNewUser)
+	userGroup.Put("/:id", handlers2.UpdateUser)
+	userGroup.Delete("/:id", handlers2.DeleteUser)
 
 	// Group Company related APIs
 	companyGroup := app.Group("/api/v1/company")
@@ -44,7 +45,7 @@ func main() {
 	companyGroup.Delete("/:id", handlers.DeleteCompany)
 
 	// Group CompanyCategory related APIs
-	companyCategoryGroup := app.Group("/api/v1companyCategory")
+	companyCategoryGroup := app.Group("/api/v1/companyCategory")
 
 	companyCategoryGroup.Get("/", handlers.GetAllCompanyCategories)
 	companyCategoryGroup.Get("/:id", handlers.GetSingleCompanyCategory)
