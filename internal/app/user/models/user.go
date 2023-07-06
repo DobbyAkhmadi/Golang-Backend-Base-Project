@@ -1,20 +1,16 @@
 package models
 
 import (
-	"backend/internal/app/company/models"
 	"backend/pkg/entity"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	entity.UUIDPrimaryKey
-	FirstName string          `json:"first_name"`
-	LastName  string          `json:"last_name"`
-	Email     string          `json:"email,omitempty" gorm:"uniqueIndex"`
-	Phone     string          `json:"phone,omitempty"`
-	CompanyID *uuid.UUID      `json:"company_id,omitempty"`
-	Company   *models.Company `json:"company,omitempty"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email,omitempty"`
+	Phone     string `json:"phone,omitempty"`
 	entity.ModelTimestamp
 }
 

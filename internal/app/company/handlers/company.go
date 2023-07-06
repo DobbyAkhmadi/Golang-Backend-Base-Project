@@ -23,7 +23,7 @@ func init() {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	models.Response{body=models.Company}
+// @Success      200  {object} 	map[string]interface{}
 // @Security 	 oauth2[identity_api]
 // @Router       /api/v1/company [get]
 func GetAllCompanies(c *fiber.Ctx) error {
@@ -47,7 +47,7 @@ func GetAllCompanies(c *fiber.Ctx) error {
 // @Produce      json
 // @Request
 // @Param        id 		path 	string  	true  "id UUID"
-// @Success      200  {object} 	models.Response{body=models.Company}
+// @Success      200  {object} 	map[string]interface{}
 // @Failure 	 406  {object}  entity.ErrorResponse
 // @Failure 	 404  {object}  entity.ErrorResponse
 // @Security 	 oauth2[identity_api]
@@ -106,7 +106,7 @@ func GetSingleCompany(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	models.Response{body=models.Company}
+// @Success      200  {object} 	map[string]interface{}
 // @Failure 	 406  {object}  entity.ErrorResponse
 // @Failure 	 404  {object}  entity.ErrorResponse
 // @Failure 	 500  {object}  entity.ErrorResponse
@@ -179,7 +179,7 @@ func AddNewCompany(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	models.Response{body=models.Company}
+// @Success      200  {object} 	map[string]interface{}
 // @Failure 	 406  {object}  entity.ErrorResponse
 // @Failure 	 404  {object}  entity.ErrorResponse
 // @Failure 	 500  {object}  entity.ErrorResponse
@@ -288,7 +288,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	models.Response{body=models.Company}
+// @Success      200  {object} 	map[string]interface{}
 // @Failure 	 406  {object}  entity.ErrorResponse
 // @Failure 	 404  {object}  entity.ErrorResponse
 // @Failure 	 500  {object}  entity.ErrorResponse

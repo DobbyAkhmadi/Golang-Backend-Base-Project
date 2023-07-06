@@ -22,7 +22,7 @@ func main() {
 	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
 	app.Get("/swagger/*", swagger.New(swagger.Config{ // custom
-		URL:         "./swagger.json",
+		URL:         "./docs",
 		DeepLinking: false,
 		// Expand ("list") or Collapse ("none") tag groups by default
 		DocExpansion: "list",

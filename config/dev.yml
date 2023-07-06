@@ -1,6 +1,6 @@
 DB:
   ADDRESS: 127.0.0.1
   PORT: 5432
-  USERNAME: dobby
-  PASSWORD: "86e7304f-384a-8847-277c-e978bf0480a6"
-  DATABASE: wedding_land
+  USERNAME: postgres
+  PASSWORD: "123456"
+  DATABASE: "db_backend"

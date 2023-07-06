@@ -25,9 +25,6 @@ func init() {
 	// Set Configurator Configuration
 	Config.SetConfigName(configEnv)
 	Config.AddConfigPath("./config")
-	Config.AddConfigPath(".")
-	Config.AddConfigPath("../../config")
-	Config.AddConfigPath("/config")
 
 	Config.SetConfigType("yaml")
 

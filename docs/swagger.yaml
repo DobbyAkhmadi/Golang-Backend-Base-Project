@@ -1,0 +1,174 @@
+basePath: /
+definitions:
+  entity.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      errors: {}
+      instance:
+        type: string
+      message:
+        type: string
+      status:
+        type: boolean
+      title:
+        type: string
+      traceId:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: This is a sample swagger for Fiber
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Fiber Example API
+  version: "1.0"
+paths:
+  /api/v1/company:
+    get:
+      consumes:
+      - application/json
+      description: GetAllCompanies gets all repository information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - oauth2:
+        - identity_api
+      summary: GetAllCompanies gets all repository information
+      tags:
+      - Company
+    post:
+      consumes:
+      - application/json
+      description: AddNewCompany adds new company
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - oauth2:
+        - identity_api
+      summary: AddNewCompany adds new company
+      tags:
+      - Company
+    put:
+      consumes:
+      - application/json
+      description: UpdateCompany updates a company by company id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - oauth2:
+        - identity_api
+      summary: UpdateCompany updates a company by company id
+      tags:
+      - Company
+  /api/v1/company/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DeleteCompany deletes the company from db
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - oauth2:
+        - identity_api
+      summary: DeleteCompany deletes the company from db
+      tags:
+      - Company
+    get:
+      consumes:
+      - application/json
+      description: GetSingleCompany Gets single company information
+      parameters:
+      - description: id UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - oauth2:
+        - identity_api
+      summary: GetSingleCompany Gets single company information
+      tags:
+      - Company
+swagger: "2.0"

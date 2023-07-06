@@ -2,7 +2,6 @@ package entity
 
 import (
 	"backend/config"
-	"backend/internal/app/company/repository"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -15,10 +14,6 @@ import (
 var DB *gorm.DB
 
 var err error
-
-var (
-	Company = repository.NewCompanyRepository()
-)
 
 func Connect() (*gorm.DB, error) {
 	//Connect to db using GORM
