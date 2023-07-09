@@ -7,4 +7,4 @@ run.swagger:
 run:
 	go run cmd/api/main.go
 swag:
-	~/go/bin/swag init -g ./cmd/docs/doc.go
+	~/go/bin/swag init -g ./docs/docs.go

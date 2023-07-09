@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   entity.ErrorResponse:
     properties:
@@ -16,18 +15,18 @@ definitions:
       traceId:
         type: string
     type: object
-host: localhost:8080
+  entity.Response:
+    properties:
+      body: {}
+      code:
+        type: integer
+      message:
+        type: string
+      title:
+        type: string
+    type: object
 info:
-  contact:
-    email: fiber@swagger.io
-    name: API Support
-  description: This is a sample swagger for Fiber
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Fiber Example API
-  version: "1.0"
+  contact: {}
 paths:
   /api/v1/company:
     get:
@@ -40,8 +39,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/entity.Response'
       security:
       - oauth2:
         - identity_api
@@ -58,8 +56,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/entity.Response'
         "404":
           description: Not Found
           schema:
@@ -88,8 +85,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/entity.Response'
         "404":
           description: Not Found
           schema:
@@ -119,8 +115,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/entity.Response'
         "404":
           description: Not Found
           schema:
@@ -155,8 +150,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/entity.Response'
         "404":
           description: Not Found
           schema:

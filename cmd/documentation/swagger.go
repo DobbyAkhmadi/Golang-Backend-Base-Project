@@ -35,5 +35,8 @@ func main() {
 		OAuth2RedirectUrl: "http://localhost:8080/swagger/oauth2-redirect.html",
 	}))
 
-	app.Listen(":8080")
+	err := app.Listen(":8080")
+	if err != nil {
+		return
+	}
 }

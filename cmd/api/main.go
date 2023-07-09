@@ -2,7 +2,6 @@ package main
 
 import (
 	"backend/internal/app/company/handlers"
-	handlers2 "backend/internal/app/user/handlers"
 	"backend/pkg/entity"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -25,15 +24,6 @@ func main() {
 
 	// Use logger
 	app.Use(logger.New())
-
-	// Group User related APIs
-	userGroup := app.Group("/api/v1/user")
-
-	userGroup.Get("/", handlers2.GetAllUsers)
-	userGroup.Get("/:id", handlers2.GetSingleUser)
-	userGroup.Post("/", handlers2.AddNewUser)
-	userGroup.Put("/:id", handlers2.UpdateUser)
-	userGroup.Delete("/:id", handlers2.DeleteUser)
 
 	// Group Company related APIs
 	companyGroup := app.Group("/api/v1/company")
