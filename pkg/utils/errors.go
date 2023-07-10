@@ -1,4 +1,4 @@
-package entity
+package utils
 
 type ErrorResponse struct {
 	Status   bool        `json:"status"`

@@ -3,16 +3,17 @@ package handlers
 import (
 	"backend/internal/app/company/models"
 	"backend/internal/app/company/repository"
-	"backend/pkg/entity"
+	"backend/pkg/utils"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"net/http"
 )
 
-var companyRepository repository.CompanyRepository
+var companyRepository repository.CompanyRepository // Declare a variable `companyRepository` of type `repository.CompanyRepository`
 
 func init() {
+	// Initialize the `companyRepository` variable by assigning a new instance of `repository.CompanyRepository`
 	companyRepository = repository.NewCompanyRepository()
 }
 
@@ -23,20 +24,23 @@ func init() {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	entity.Response
+// @Success      200  {object} 	utils.Response
 // @Security 	 oauth2[identity_api]
 // @Router       /api/v1/company [get]
 func GetAllCompanies(c *fiber.Ctx) error {
+	// Retrieve all companies from the company repository
 	companies := companyRepository.FindAll()
 
-	resp := entity.Response{
+	// Prepare the response object
+	response := utils.Response{
 		Code:    http.StatusOK,
 		Body:    companies,
 		Title:   "GetAllCompanies",
 		Message: "All Companies",
 	}
 
-	return c.Status(resp.Code).JSON(resp)
+	// Return the response as JSON
+	return c.Status(response.Code).JSON(response)
 }
 
 // GetSingleCompany godoc
@@ -47,16 +51,16 @@ func GetAllCompanies(c *fiber.Ctx) error {
 // @Produce      json
 // @Request
 // @Param        id 		path 	string  	true  "id UUID"
-// @Success      200  {object} 	entity.Response
-// @Failure 	 406  {object}  entity.ErrorResponse
-// @Failure 	 404  {object}  entity.ErrorResponse
+// @Success      200  {object} 	utils.Response
+// @Failure 	 406  {object}  utils.ErrorResponse
+// @Failure 	 404  {object}  utils.ErrorResponse
 // @Security 	 oauth2[identity_api]
 // @Router       /api/v1/company/{id} [get]
 func GetSingleCompany(c *fiber.Ctx) error {
 	id, err := uuid.Parse(c.FormValue("id"))
 
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -68,7 +72,7 @@ func GetSingleCompany(c *fiber.Ctx) error {
 
 	company, err := companyRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    err.Error(),
 			Title:   "NotFound",
@@ -79,7 +83,7 @@ func GetSingleCompany(c *fiber.Ctx) error {
 	}
 
 	if company == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("company with id %d could not be found", id),
 			Title:   "NotFound",
@@ -89,7 +93,7 @@ func GetSingleCompany(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    company,
 		Title:   "OK",
@@ -106,10 +110,10 @@ func GetSingleCompany(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	entity.Response
-// @Failure 	 406  {object}  entity.ErrorResponse
-// @Failure 	 404  {object}  entity.ErrorResponse
-// @Failure 	 500  {object}  entity.ErrorResponse
+// @Success      200  {object} 	utils.Response
+// @Failure 	 406  {object}  utils.ErrorResponse
+// @Failure 	 404  {object}  utils.ErrorResponse
+// @Failure 	 500  {object}  utils.ErrorResponse
 // @Security 	 oauth2[identity_api]
 // @Router       /api/v1/company [post]
 func AddNewCompany(c *fiber.Ctx) error {
@@ -118,7 +122,7 @@ func AddNewCompany(c *fiber.Ctx) error {
 	err := c.BodyParser(company)
 
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "Error",
@@ -130,7 +134,7 @@ func AddNewCompany(c *fiber.Ctx) error {
 
 	id, err := companyRepository.Save(*company)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -142,7 +146,7 @@ func AddNewCompany(c *fiber.Ctx) error {
 
 	company, err = companyRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -152,7 +156,7 @@ func AddNewCompany(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 	if company == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("company with id %d could not be found", id),
 			Title:   "NotFound",
@@ -162,7 +166,7 @@ func AddNewCompany(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    company,
 		Title:   "OK",
@@ -179,10 +183,10 @@ func AddNewCompany(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	entity.Response
-// @Failure 	 406  {object}  entity.ErrorResponse
-// @Failure 	 404  {object}  entity.ErrorResponse
-// @Failure 	 500  {object}  entity.ErrorResponse
+// @Success      200  {object} 	utils.Response
+// @Failure 	 406  {object}  utils.ErrorResponse
+// @Failure 	 404  {object}  utils.ErrorResponse
+// @Failure 	 500  {object}  utils.ErrorResponse
 // @Security 	 oauth2[identity_api]
 // @Router       /api/v1/company [put]
 func UpdateCompany(c *fiber.Ctx) error {
@@ -190,7 +194,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 	err := c.BodyParser(company)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -202,7 +206,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -214,7 +218,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 	updatingCompany, err := companyRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    err.Error(),
 			Title:   "NotFound",
@@ -225,7 +229,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 	}
 
 	if updatingCompany == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("company with id %d could not be found", id),
 			Title:   "NotFound",
@@ -239,7 +243,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 	err = companyRepository.Update(*company)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -251,7 +255,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 	company, err = companyRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -262,7 +266,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 	}
 
 	if company == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("company with id %d could not be found", id),
 			Title:   "NotFound",
@@ -272,7 +276,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    company,
 		Title:   "UpdateCompany",
@@ -288,17 +292,17 @@ func UpdateCompany(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Request
-// @Success      200  {object} 	entity.Response
-// @Failure 	 406  {object}  entity.ErrorResponse
-// @Failure 	 404  {object}  entity.ErrorResponse
-// @Failure 	 500  {object}  entity.ErrorResponse
+// @Success      200  {object} 	utils.Response
+// @Failure 	 406  {object}  utils.ErrorResponse
+// @Failure 	 404  {object}  utils.ErrorResponse
+// @Failure 	 500  {object}  utils.ErrorResponse
 // @Security 	 oauth2[identity_api]
 // @Router       /api/v1/company/{id} [delete]
 func DeleteCompany(c *fiber.Ctx) error {
 	id, err := uuid.Parse(c.Params("id"))
 
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "Error",
@@ -310,7 +314,7 @@ func DeleteCompany(c *fiber.Ctx) error {
 
 	company, err := companyRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -321,7 +325,7 @@ func DeleteCompany(c *fiber.Ctx) error {
 	}
 
 	if company == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("company with id %d could not be found", id),
 			Title:   "NotFound",
@@ -333,7 +337,7 @@ func DeleteCompany(c *fiber.Ctx) error {
 
 	err = companyRepository.Delete(*company)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -343,7 +347,7 @@ func DeleteCompany(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    "company deleted successfully",
 		Title:   "OK",

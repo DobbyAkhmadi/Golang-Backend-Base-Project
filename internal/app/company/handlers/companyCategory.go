@@ -3,15 +3,17 @@ package handlers
 import (
 	"backend/internal/app/company/models"
 	"backend/internal/app/company/repository"
-	"backend/pkg/entity"
+	"backend/pkg/utils"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"net/http"
 )
 
+// companyCategoryRepository is an instance of the CompanyCategoryRepository.
 var companyCategoryRepository repository.CompanyCategoryRepository
 
+// init initializes the companyCategoryRepository instance.
 func init() {
 	companyCategoryRepository = repository.NewCompanyCategoryRepository()
 }
@@ -20,7 +22,7 @@ func init() {
 func GetAllCompanyCategories(c *fiber.Ctx) error {
 	companyCategories := companyCategoryRepository.FindAll()
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    companyCategories,
 		Title:   "GetAllCompanyCategories",
@@ -35,7 +37,7 @@ func GetSingleCompanyCategory(c *fiber.Ctx) error {
 	id, err := uuid.Parse(c.Params("id"))
 
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -47,7 +49,7 @@ func GetSingleCompanyCategory(c *fiber.Ctx) error {
 
 	companyCategory, err := companyCategoryRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    err.Error(),
 			Title:   "NotFound",
@@ -58,7 +60,7 @@ func GetSingleCompanyCategory(c *fiber.Ctx) error {
 	}
 
 	if companyCategory == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("companyCategory with id %d could not be found", id),
 			Title:   "NotFound",
@@ -68,7 +70,7 @@ func GetSingleCompanyCategory(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    companyCategory,
 		Title:   "OK",
@@ -85,7 +87,7 @@ func AddNewCompanyCategory(c *fiber.Ctx) error {
 	err := c.BodyParser(companyCategory)
 
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "Error",
@@ -97,7 +99,7 @@ func AddNewCompanyCategory(c *fiber.Ctx) error {
 
 	id, err := companyCategoryRepository.Save(*companyCategory)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -109,7 +111,7 @@ func AddNewCompanyCategory(c *fiber.Ctx) error {
 
 	companyCategory, err = companyCategoryRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -119,7 +121,7 @@ func AddNewCompanyCategory(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 	if companyCategory == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("companyCategory with id %d could not be found", id),
 			Title:   "NotFound",
@@ -129,7 +131,7 @@ func AddNewCompanyCategory(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    companyCategory,
 		Title:   "OK",
@@ -145,7 +147,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 
 	err := c.BodyParser(companyCategory)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -157,7 +159,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 
 	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -169,7 +171,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 
 	updatingCompanyCategory, err := companyCategoryRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    err.Error(),
 			Title:   "NotFound",
@@ -180,7 +182,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 	}
 
 	if updatingCompanyCategory == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("companyCategory with id %d could not be found", id),
 			Title:   "NotFound",
@@ -194,7 +196,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 
 	err = companyCategoryRepository.Update(*companyCategory)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -206,7 +208,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 
 	companyCategory, err = companyCategoryRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -217,7 +219,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 	}
 
 	if companyCategory == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("companyCategory with id %d could not be found", id),
 			Title:   "NotFound",
@@ -227,7 +229,7 @@ func UpdateCompanyCategory(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    companyCategory,
 		Title:   "UpdateCompanyCategory",
@@ -241,7 +243,7 @@ func DeleteCompanyCategory(c *fiber.Ctx) error {
 	id, err := uuid.Parse(c.Params("id"))
 
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "Error",
@@ -253,7 +255,7 @@ func DeleteCompanyCategory(c *fiber.Ctx) error {
 
 	companyCategory, err := companyCategoryRepository.FindByID(id)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusInternalServerError,
 			Body:    err.Error(),
 			Title:   "InternalServerError",
@@ -264,7 +266,7 @@ func DeleteCompanyCategory(c *fiber.Ctx) error {
 	}
 
 	if companyCategory == nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotFound,
 			Body:    fmt.Sprintf("companyCategory with id %d could not be found", id),
 			Title:   "NotFound",
@@ -276,7 +278,7 @@ func DeleteCompanyCategory(c *fiber.Ctx) error {
 
 	err = companyCategoryRepository.Delete(*companyCategory)
 	if err != nil {
-		errorResp := entity.Response{
+		errorResp := utils.Response{
 			Code:    http.StatusNotAcceptable,
 			Body:    err.Error(),
 			Title:   "NotAcceptable",
@@ -286,7 +288,7 @@ func DeleteCompanyCategory(c *fiber.Ctx) error {
 		return c.Status(errorResp.Code).JSON(errorResp)
 	}
 
-	resp := entity.Response{
+	resp := utils.Response{
 		Code:    http.StatusOK,
 		Body:    "companyCategory deleted successfully",
 		Title:   "OK",

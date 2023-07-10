@@ -2,7 +2,7 @@ package repository
 
 import (
 	"backend/internal/app/company/models"
-	"backend/pkg/entity"
+	"backend/pkg/utils"
 	"fmt"
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
@@ -25,20 +25,21 @@ type companyCategoryDatabase struct {
 	connection *gorm.DB
 }
 
+// NewCompanyCategoryRepository initialize constructor
 func NewCompanyCategoryRepository() CompanyCategoryRepository {
-	if entity.DB == nil {
-		connect, _ := entity.Connect()
+	if utils.DB == nil {
+		connect, _ := utils.Connect()
 		if connect != nil {
 			log.Error(connect)
 		}
 		model := models.CompanyCategory{}
-		err := model.AutoMigrate(entity.DB)
+		err := model.AutoMigrate(utils.DB)
 		if err != nil {
 			panic(err)
 		}
 	}
 	return &companyCategoryDatabase{
-		connection: entity.DB,
+		connection: utils.DB,
 	}
 }
 
