@@ -24,6 +24,6 @@ func SetupRoutesProduct(app *fiber.App) {
 	productGroup.Get("/:id", productHandler.GetProductByID)
 	productGroup.Post("/", productHandler.CreateNewProduct)
 	productGroup.Put("/:id", productHandler.UpdateExistingProduct)
-	productGroup.Delete("/:id", productHandler.DeleteExistingProduct)
+	productGroup.Delete("/:id", productHandler.DeleteProductByID)
 
 }

@@ -19,6 +19,18 @@ func NewTransactionHandler(transactionService service.TransactionService) *Trans
 	}
 }
 
+// CreateTransaction create a new transaction.
+// @Summary Create Transaction
+// @Description Create a new transaction
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Param transaction body models.CreateTransactionDTO true "Transaction details"
+// @Success 200 {object} utils.Response
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
+// @Security ApiKeyAuth
+// @Router /api/v1/transaction [post]
 func (h *TransactionHandler) CreateTransaction(c *fiber.Ctx) error {
 	// Parse and validate the request body
 	transaction := new(models.CreateTransactionDTO)
@@ -103,6 +115,18 @@ func (h *TransactionHandler) GetPaginationTransaction(ctx *fiber.Ctx) error {
 
 }
 
+// GetTransactionById get a transaction by ID.
+// @Summary Get Transaction by ID
+// @Description Get a transaction by the provided ID
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Param id path string true "Transaction ID"
+// @Success 200 {object} utils.Response
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 404 {object} utils.ErrorResponse
+// @Security ApiKeyAuth
+// @Router /api/v1/transaction/{id} [get]
 func (h *TransactionHandler) GetTransactionById(ctx *fiber.Ctx) error {
 	// Get the service.product ID from the request parameters
 	id := ctx.Params("id")

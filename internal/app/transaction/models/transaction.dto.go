@@ -5,9 +5,9 @@ import (
 )
 
 type CreateTransactionDTO struct {
-	UserID     string                    `json:"user_id"`
-	SupplierID string                    `json:"supplier_id"`
-	Data       []GetTransactionDetailDto `json:"data"`
+	UserID     string                       `json:"user_id"`
+	SupplierID string                       `json:"supplier_id"`
+	Data       []CreateTransactionDetailDTO `json:"data"`
 }
 
 type CreateTransactionDetailDTO struct {

@@ -6,7 +6,7 @@ type CreateProductRequestDTO struct {
 	Stock       int64  `json:"stock"`
 }
 
-type UpdateProductResponseDTO struct {
+type UpdateProductRequestDTO struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`

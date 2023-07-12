@@ -76,7 +76,7 @@ func (s *ProductServiceImpl) Create(request *models.CreateProductRequestDTO) (mo
 	return dto, nil
 }
 
-func (s *ProductServiceImpl) Update(request *models.UpdateProductResponseDTO) (models.GetProductResponseDTO, error) {
+func (s *ProductServiceImpl) Update(request *models.UpdateProductRequestDTO) (models.GetProductResponseDTO, error) {
 	// Add business logic for creating a Product
 	// Validate the Product, perform any necessary transformations, and interact with the repository
 	// Return any relevant errors

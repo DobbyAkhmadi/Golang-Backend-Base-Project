@@ -9,6 +9,35 @@ definitions:
       stock:
         type: integer
     type: object
+  models.CreateTransactionDTO:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.CreateTransactionDetailDTO'
+        type: array
+      supplier_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.CreateTransactionDetailDTO:
+    properties:
+      product_id:
+        type: string
+      qty:
+        type: integer
+    type: object
+  models.UpdateProductRequestDTO:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      stock:
+        type: integer
+    type: object
   utils.ErrorResponse:
     properties:
       code:
@@ -59,6 +88,49 @@ paths:
       tags:
       - root
   /api/v1/product:
+    get:
+      consumes:
+      - application/json
+      description: Get All Paginated products with the provided request data
+      parameters:
+      - default: 1
+        description: Page index
+        in: query
+        name: page_index
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Global search term
+        in: query
+        name: search
+        type: string
+      - description: Sort by field
+        in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Pagination Product
+      tags:
+      - Product
     post:
       consumes:
       - application/json
@@ -90,6 +162,161 @@ paths:
       summary: Create a new product
       tags:
       - Product
+    put:
+      consumes:
+      - application/json
+      description: Update existing product with the provided request data
+      parameters:
+      - description: Request body containing product details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProductRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update existing product
+      tags:
+      - Product
+  /api/v1/product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product by the provided ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Product by ID
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      description: Get a product by the provided ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Product by ID
+      tags:
+      - Product
+  /api/v1/transaction:
+    post:
+      consumes:
+      - application/json
+      description: Create a new transaction
+      parameters:
+      - description: Transaction details
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateTransactionDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Transaction
+      tags:
+      - Transaction
+  /api/v1/transaction/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a transaction by the provided ID
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Transaction by ID
+      tags:
+      - Transaction
 schemes:
 - http
 - https
