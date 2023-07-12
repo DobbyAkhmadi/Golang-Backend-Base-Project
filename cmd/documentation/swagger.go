@@ -1,28 +1,44 @@
 package main
 
 import (
-	_ "backend/docs"
+	"log"
+
+	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/swagger"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+	_ "github.com/rizalgowandy/go-swag-sample/docs/fibersimple" // you need to update github.com/rizalgowandy/go-swag-sample with your own project path
 )
 
-// @title Fiber Example API
-// @version 1.0
-// @description This is a sample swagger for Fiber
+// @title Fiber Swagger Example API
+// @version 2.0
+// @description This is a sample server.
 // @termsOfService http://swagger.io/terms/
+
 // @contact.name API Support
-// @contact.email fiber@swagger.io
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @host localhost:8080
+
+// @host localhost:3000
 // @BasePath /
+// @schemes http
 func main() {
+	// Fiber instance
 	app := fiber.New()
 
+	// Middleware
+	app.Use(recover.New())
+	app.Use(cors.New())
+
+	// Routes
+	app.Get("/", HealthCheck)
 	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
 	app.Get("/swagger/*", swagger.New(swagger.Config{ // custom
-		URL:         "./docs",
+		URL:         "http://example.com/doc.json",
 		DeepLinking: false,
 		// Expand ("list") or Collapse ("none") tag groups by default
 		DocExpansion: "list",
@@ -34,9 +50,28 @@ func main() {
 		// Ability to change OAuth2 redirect uri location
 		OAuth2RedirectUrl: "http://localhost:8080/swagger/oauth2-redirect.html",
 	}))
-
-	err := app.Listen(":8080")
-	if err != nil {
-		return
+	// Start Server
+	if err := app.Listen(":3000"); err != nil {
+		log.Fatal(err)
 	}
+}
+
+// HealthCheck godoc
+// @Summary Show the status of server.
+// @Description get the status of server.
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router / [get]
+func HealthCheck(c *fiber.Ctx) error {
+	res := map[string]interface{}{
+		"data": "Server is up and running",
+	}
+
+	if err := c.JSON(res); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -4,11 +4,13 @@ import (
 	"backend/config"
 	"backend/internal/app/transaction/routes"
 	"backend/pkg/utils"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"log"
+	"time"
 )
+
+const idleTimeout = 5 * time.Second
 
 func main() {
 	// Connect to database
@@ -16,20 +18,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Create a new Fiber instance
-	app := fiber.New()
 
-	// Use logger
-	app.Use(logger.New())
+	// Create a new Fiber instance
+	app := fiber.New(fiber.Config{
+		AppName:     "TRANSACTION SERVICE Version : " + config.Config.GetString("SERVER.VERSION"),
+		IdleTimeout: idleTimeout,
+	})
 
 	// Initialize routes
 	routes.SetupRoutesTransactionRoutes(app)
 
-	// add more routes
-	err = app.Listen(fmt.Sprintf(config.Config.GetString("TRANSACTION.SERVICE.HOST")+":%v",
-		config.Config.GetString("TRANSACTION.SERVICE.PORT")))
-	if err != nil {
-		fmt.Println("Error starting Service transaction:", err)
-		log.Fatal(err)
-	}
+	// Use logger
+	app.Use(logger.New())
+
+	addr := config.Config.GetString("TRANSACTION.SERVICE.HOST") + ":" + config.Config.GetString("TRANSACTION.SERVICE.PORT")
+
+	// start server with graceful shutdown
+	utils.StartServerWithGracefulShutdown(app, addr)
 }

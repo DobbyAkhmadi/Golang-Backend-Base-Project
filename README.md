@@ -21,27 +21,30 @@
 
 ### Structure of Go packages
 
+##### this application has implement service repository pattern
+
 - `cmd/*` - main application(s)
   - `/api/*` - list api routes
-  - `/doc/` - swagger routes
+  - `/documentation/` - swagger routes
 - `config/` - configuration(s) (default values, env, flags) for application(s) subcommands and tests
 - `deployments/` - IaaS, PaaS, system and container orchestration deployment configurations and templates (docker-compose, kubernetes/helm, mesos, terraform, bosh).
 - `docs/*` - documentation swagger
-- `internal/appfolder/`  -define interfaces and implements business-logic
+- `internal/app/`  -define interfaces and implements business-logic
     - `handlers/` - list handlers controller
     - `models/` - list models
     - `repository/` - list repository
     - `routes/` - list routes
+    -  `service/` - list services
 - `pkg/*` - helper packages 3rd party library, not related to architecture and business-logic
+- `platform/*` - database migration , cache
+- `log/*` - logging application
 - `test/*` - list unit testing
 - `third_party/*` - list 3rd party
 
 ### Features
 
-- [X] Project structure (mostly) follows [Standard Go Project Layout](https://github.com/golang-standards/project-layout).
-- [X] Easily testable code (thanks to The Clean Architecture).
-- [X] Avoids (and resists to) using global objects (to make it possible to
-  embed such microservices into modular monolith).
-- [X] CLI subcommands support using [cobra](https://github.com/spf13/cobra).
+- [ ] Basic Auth JWT.
+- [X] Basic CRUD
+- [X] API Resources Naming Standard https://restfulapi.net/resource-naming/.
 - [X] Graceful shutdown support.
 - [X] Configuration defaults can be overwritten by env vars and flags.
