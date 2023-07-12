@@ -10,15 +10,52 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "fiber@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/service.product": {
+        "/": {
+            "get": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Show the status of server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/product": {
             "post": {
-                "description": "Create a new service.product with the provided request data",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new product with the provided request data",
                 "consumes": [
                     "application/json"
                 ],
@@ -26,17 +63,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "companies"
+                    "Product"
                 ],
-                "summary": "Create a new service.product",
+                "summary": "Create a new product",
                 "parameters": [
                     {
-                        "description": "Request body containing service.product details",
+                        "description": "Request body containing product details",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateCompanyRequestDTO"
+                            "$ref": "#/definitions/models.CreateProductRequestDTO"
                         }
                     }
                 ],
@@ -52,13 +89,19 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/utils.ErrorResponse"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
-        "models.CreateCompanyRequestDTO": {
+        "models.CreateProductRequestDTO": {
             "type": "object",
             "properties": {
                 "description": {
@@ -67,8 +110,8 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "website": {
-                    "type": "string"
+                "stock": {
+                    "type": "integer"
                 }
             }
         },
@@ -102,17 +145,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
-	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Version:          "2.0",
+	Host:             "localhost:8080",
+	BasePath:         "/api/v1",
+	Schemes:          []string{"http", "https"},
+	Title:            "Fiber Example API",
+	Description:      "This is a sample swagger for Fiber",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

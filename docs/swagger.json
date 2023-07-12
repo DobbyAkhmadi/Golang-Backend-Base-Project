@@ -1,12 +1,58 @@
 {
+    "schemes": [
+        "http",
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is a sample swagger for Fiber",
+        "title": "Fiber Example API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "fiber@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "2.0"
     },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
     "paths": {
-        "/api/v1/company": {
+        "/": {
+            "get": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Show the status of server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/product": {
             "post": {
-                "description": "Create a new company with the provided request data",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new product with the provided request data",
                 "consumes": [
                     "application/json"
                 ],
@@ -14,17 +60,17 @@
                     "application/json"
                 ],
                 "tags": [
-                    "companies"
+                    "Product"
                 ],
-                "summary": "Create a new company",
+                "summary": "Create a new product",
                 "parameters": [
                     {
-                        "description": "Request body containing company details",
+                        "description": "Request body containing product details",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateCompanyRequestDTO"
+                            "$ref": "#/definitions/models.CreateProductRequestDTO"
                         }
                     }
                 ],
@@ -40,13 +86,19 @@
                         "schema": {
                             "$ref": "#/definitions/utils.ErrorResponse"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
-        "models.CreateCompanyRequestDTO": {
+        "models.CreateProductRequestDTO": {
             "type": "object",
             "properties": {
                 "description": {
@@ -55,8 +107,8 @@
                 "name": {
                     "type": "string"
                 },
-                "website": {
-                    "type": "string"
+                "stock": {
+                    "type": "integer"
                 }
             }
         },
@@ -89,6 +141,13 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

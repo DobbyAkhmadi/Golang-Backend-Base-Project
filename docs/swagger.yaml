@@ -1,12 +1,13 @@
+basePath: /api/v1
 definitions:
-  models.CreateCompanyRequestDTO:
+  models.CreateProductRequestDTO:
     properties:
       description:
         type: string
       name:
         type: string
-      website:
-        type: string
+      stock:
+        type: integer
     type: object
   utils.ErrorResponse:
     properties:
@@ -28,21 +29,47 @@ definitions:
       status:
         type: string
     type: object
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: This is a sample swagger for Fiber
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Fiber Example API
+  version: "2.0"
 paths:
-  /api/v1/company:
+  /:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of server.
+      tags:
+      - root
+  /api/v1/product:
     post:
       consumes:
       - application/json
-      description: Create a new service.product with the provided request data
+      description: Create a new product with the provided request data
       parameters:
-      - description: Request body containing service.product details
+      - description: Request body containing product details
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CreateCompanyRequestDTO'
+          $ref: '#/definitions/models.CreateProductRequestDTO'
       produces:
       - application/json
       responses:
@@ -54,7 +81,21 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/utils.ErrorResponse'
-      summary: Create a new service.product
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new product
       tags:
-      - companies
+      - Product
+schemes:
+- http
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

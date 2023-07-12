@@ -20,16 +20,17 @@ func NewProductHandler(productService service.ProductService) *ProductHandler {
 }
 
 // CreateNewProduct creates a new service.product.
-// @Summary Create a new service.product
-// @Description Create a new service.product with the provided request data
-// @Tags companies
+// @Summary Create a new product
+// @Description Create a new product with the provided request data
+// @Tags Product
 // @Accept json
 // @Produce json
-// @Param request body models.CreateProductRequestDTO true "Request body containing service.product details"
+// @Param request body models.CreateProductRequestDTO true "Request body containing product details"
 // @Success 200 {object} utils.Response
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
-// @Router /api/v1/service.product [post]
+// @Security ApiKeyAuth
+// @Router /api/v1/product [post]
 func (h *ProductHandler) CreateNewProduct(ctx *fiber.Ctx) error {
 	// request new data from http
 	request := new(models.CreateProductRequestDTO)
