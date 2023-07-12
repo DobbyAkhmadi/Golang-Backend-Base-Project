@@ -1,10 +1,8 @@
 package utils
 
 type ErrorResponse struct {
-	Status   bool        `json:"status"`
 	Code     int         `json:"code,omitempty"`
-	Title    string      `json:"title,omitempty"`
-	Message  string      `json:"message,omitempty"`
+	Status   string      `json:"status"`
 	Errors   interface{} `json:"errors,omitempty"`
 	TraceID  string      `json:"traceId,omitempty"`
 	Instance string      `json:"instance,omitempty"`

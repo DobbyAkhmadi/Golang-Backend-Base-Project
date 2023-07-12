@@ -2,7 +2,7 @@ package main
 
 import (
 	"backend/config"
-	"backend/internal/app/company/routes"
+	"backend/internal/app/transaction/routes"
 	"backend/pkg/utils"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
@@ -23,13 +23,13 @@ func main() {
 	app.Use(logger.New())
 
 	// Initialize routes
-	routes.SetupRoutesCompany(app)
+	routes.SetupRoutesTransactionRoutes(app)
 
 	// add more routes
-
-	err = app.Listen(fmt.Sprintf(config.Config.GetString("COMPANY.SERVICE.HOST")+":%v",
-		config.Config.GetString("COMPANY.SERVICE.PORT")))
+	err = app.Listen(fmt.Sprintf(config.Config.GetString("TRANSACTION.SERVICE.HOST")+":%v",
+		config.Config.GetString("TRANSACTION.SERVICE.PORT")))
 	if err != nil {
+		fmt.Println("Error starting Service transaction:", err)
 		log.Fatal(err)
 	}
 }

@@ -16,90 +16,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/company": {
-            "get": {
-                "security": [
-                    {
-                        "oauth2": [
-                            "identity_api"
-                        ]
-                    }
-                ],
-                "description": "GetAllCompanies gets all repository information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Company"
-                ],
-                "summary": "GetAllCompanies gets all repository information",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "oauth2": [
-                            "identity_api"
-                        ]
-                    }
-                ],
-                "description": "UpdateCompany updates a company by company id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Company"
-                ],
-                "summary": "UpdateCompany updates a company by company id",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    },
-                    "406": {
-                        "description": "Not Acceptable",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    }
-                }
-            },
+        "/api/v1/service.product": {
             "post": {
-                "security": [
-                    {
-                        "oauth2": [
-                            "identity_api"
-                        ]
-                    }
-                ],
-                "description": "AddNewCompany adds new company",
+                "description": "Create a new service.product with the provided request data",
                 "consumes": [
                     "application/json"
                 ],
@@ -107,64 +26,18 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Company"
+                    "companies"
                 ],
-                "summary": "AddNewCompany adds new company",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    },
-                    "406": {
-                        "description": "Not Acceptable",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/company/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "oauth2": [
-                            "identity_api"
-                        ]
-                    }
-                ],
-                "description": "GetSingleCompany Gets single company information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Company"
-                ],
-                "summary": "GetSingleCompany Gets single company information",
+                "summary": "Create a new service.product",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "id UUID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "description": "Request body containing service.product details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateCompanyRequestDTO"
+                        }
                     }
                 ],
                 "responses": {
@@ -174,60 +47,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/utils.Response"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    },
-                    "406": {
-                        "description": "Not Acceptable",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "oauth2": [
-                            "identity_api"
-                        ]
-                    }
-                ],
-                "description": "DeleteCompany deletes the company from db",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Company"
-                ],
-                "summary": "DeleteCompany deletes the company from db",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    },
-                    "406": {
-                        "description": "Not Acceptable",
-                        "schema": {
-                            "$ref": "#/definitions/utils.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/utils.ErrorResponse"
                         }
@@ -237,6 +58,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.CreateCompanyRequestDTO": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
         "utils.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -247,13 +82,7 @@ const docTemplate = `{
                 "instance": {
                     "type": "string"
                 },
-                "message": {
-                    "type": "string"
-                },
                 "status": {
-                    "type": "boolean"
-                },
-                "title": {
                     "type": "string"
                 },
                 "traceId": {
@@ -264,14 +93,11 @@ const docTemplate = `{
         "utils.Response": {
             "type": "object",
             "properties": {
-                "body": {},
                 "code": {
                     "type": "integer"
                 },
-                "message": {
-                    "type": "string"
-                },
-                "title": {
+                "data": {},
+                "status": {
                     "type": "string"
                 }
             }

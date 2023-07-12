@@ -40,3 +40,19 @@ func (u *UUIDPrimaryKey) BeforeCreate(tx *gorm.DB) (err error) {
 	u.ID = uuid.New()
 	return
 }
+
+type GetGlobalResponsePaginationDto struct {
+	Code      int         `json:"code"`
+	Status    string      `json:"status"`
+	Data      interface{} `json:"data,omitempty"`
+	PageIndex int         `json:"page_index"`
+	PageSize  int         `json:"page_size"`
+	TotalRows int64       `json:"total_rows"`
+}
+
+type SetPaginationDto struct {
+	PageIndex    int    `json:"page_index"`
+	PageSize     int    `json:"page_size"`
+	GlobalSearch string `json:"search"`
+	SortBy       string `json:"sort_by"`
+}
