@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -19,9 +20,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	readTimeoutSecondsCount, _ := strconv.Atoi(config.Config.GetString("PRODUCT.SERVICE.SERVER_READ_TIMEOUT"))
+
 	// Create a new Fiber instance
 	app := fiber.New(fiber.Config{
 		AppName:     "PRODUCT SERVICE Version : " + config.Config.GetString("SERVER.VERSION"),
+		ReadTimeout: time.Second * time.Duration(readTimeoutSecondsCount),
 		IdleTimeout: idleTimeout,
 	})
 
