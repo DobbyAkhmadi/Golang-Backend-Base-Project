@@ -8,12 +8,12 @@ import (
 // User represents a user entity.
 type User struct {
 	utils.UUIDPrimaryKey        // Embeds the UUIDPrimaryKey struct for a UUID primary key field
-	FirstName            string `json:"first_name,omitempty"` // FirstName of the user (optional)
-	LastName             string `json:"last_name,omitempty"` // LastName of the user (optional)
-	PhoneNumber          string `json:"phone_number,omitempty"` // PhoneNumber of the user (optional)
-	Address              string `json:"address,omitempty"` // Address of the user (optional)
-	Username             string `json:"username,omitempty"` // Username of the user (optional)
-	Password             string `json:"password" validate:"required"` // Password of the user (required)
+	FirstName            string `json:"first_name,omitempty"`             // FirstName of the user (optional)
+	LastName             string `json:"last_name,omitempty"`              // LastName of the user (optional)
+	PhoneNumber          string `json:"phone_number,omitempty"`           // PhoneNumber of the user (optional)
+	Address              string `json:"address,omitempty"`                // Address of the user (optional)
+	Username             string `json:"username,omitempty"`               // Username of the user (optional)
+	Password             string `json:"password" validate:"required"`     // Password of the user (required)
 	Email                string `json:"email,omitempty" validate:"email"` // Email of the user (optional, must be a valid email address)
 	utils.ModelTimestamp        // Embeds the ModelTimestamp struct for timestamp fields
 }
