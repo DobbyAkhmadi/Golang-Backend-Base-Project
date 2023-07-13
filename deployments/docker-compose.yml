@@ -1,7 +1,9 @@
 version: "3.9"
+# Database Postgres
 services:
   db:
     image: postgres:latest
+    container_name: "postgres"
     restart: always
     ports:
       - "5432:5432"
@@ -9,3 +11,73 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: db_backend
+
+  # Reverse Proxy Services
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`traefik.${DOMAIN}`)"
+      #- "traefik.http.routers.api.entrypoints=web-secure"
+      - "traefik.http.routers.api.tls.certresolver=certificato"
+      - "traefik.http.routers.api.tls.domains[0].main=*.${DOMAIN}"
+      - "traefik.http.routers.api.service=api@internal"
+      # Add at least an authentication middleware basic or OAuth for a better security
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  # prometheus - Get Metrics for Monitoring System
+  prometheus:
+    image: prom/prometheus
+    #image: prom/prometheus-linux-arm64:v2.40.2
+    container_name: "prometheus"
+    user: root
+    volumes:
+      - "./etc/prometheus/:/etc/prometheus/"
+      - "./var/prometheus/prometheus_data:/prometheus"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.enable-lifecycle"
+    ports:
+      - "9090:9090"
+
+
+  # Grafana - Graphical data visualization
+  grafana:
+    image: grafana/grafana
+    container_name: "grafana"
+    user: root
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./var/grafana/grafana_data:/var/lib/grafana"
+      - "./etc/grafana/provisioning/:/etc/grafana/provisioning/"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=foobar
+      - GF_USERS_ALLOW_SIGN_UP=false
+
+  alertmanager:
+      image: prom/alertmanager
+      container_name: "alertmanager"
+      ports:
+        - 9093:9093
+      volumes:
+        - ./etc/alertmanager/:/etc/alertmanager/
+      command:
+        - "--config.file=/etc/alertmanager/config.yml"
+        - "--storage.path=/alertmanager"
+
