@@ -9,8 +9,6 @@ import (
 
 // SetupRoutesProduct Define your routes here
 func SetupRoutesProduct(app *fiber.App) {
-	// Group Company related APIs
-
 	// Create the handlers instances with their respective dependencies
 	// Create the repository and service dependencies
 	productRepository := repository.NewProductRepository()

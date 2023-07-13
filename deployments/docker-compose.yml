@@ -14,7 +14,7 @@ services:
 
   # Reverse Proxy Services
   traefik:
-    image: "traefik:v2.10"
+    image: traefik:latest
     container_name: "traefik"
     command:
       #- "--log.level=DEBUG"
@@ -39,7 +39,7 @@ services:
 
   # prometheus - Get Metrics for Monitoring System
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     #image: prom/prometheus-linux-arm64:v2.40.2
     container_name: "prometheus"
     user: root
@@ -55,10 +55,9 @@ services:
     ports:
       - "9090:9090"
 
-
   # Grafana - Graphical data visualization
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
     container_name: "grafana"
     user: root
     ports:
@@ -70,8 +69,9 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=foobar
       - GF_USERS_ALLOW_SIGN_UP=false
 
+  # AlertManager - Send Alert Log Notification to Slack
   alertmanager:
-      image: prom/alertmanager
+      image: prom/alertmanager:latest
       container_name: "alertmanager"
       ports:
         - 9093:9093
@@ -81,3 +81,16 @@ services:
         - "--config.file=/etc/alertmanager/config.yml"
         - "--storage.path=/alertmanager"
 
+  # Portainer - UI Docker Container
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: "portainer"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    ports:
+      - 9000:9000

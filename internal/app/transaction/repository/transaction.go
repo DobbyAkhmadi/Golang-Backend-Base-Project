@@ -29,7 +29,7 @@ func (r *dbTransactionRepository) GetPagination(paginate utils.SetPaginationDto)
 		return transaction, details, total, query.Error
 	}
 	// Retrieve the details associated with the transactions
-	query = r.connection.Model(&models2.TransactionDetail{}).Where("transaction_id IN (?)", transaction).Find(&details)
+	query = r.connection.Model(&models2.TransactionDetail{}).Where("transaction_id IN (?)", &transaction).Find(&details)
 	if query.Error != nil {
 		return transaction, details, total, query.Error
 	}

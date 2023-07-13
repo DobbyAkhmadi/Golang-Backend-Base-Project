@@ -51,7 +51,7 @@ func (db dbProductRepository) GetByID(id string) (*models.Product, error) {
 
 func (db dbProductRepository) GetPagination(paginate utils.SetPaginationDto) ([]*models.Product, int64, error) {
 	offset := (paginate.PageIndex - 1) * paginate.PageSize
-	var users []*models.Product
+	var myModel []*models.Product
 	var total int64
 
 	query := db.connection.Model(&models.Product{})
@@ -73,11 +73,11 @@ func (db dbProductRepository) GetPagination(paginate utils.SetPaginationDto) ([]
 	}
 
 	// Apply pagination
-	if err := query.Offset(offset).Limit(paginate.PageSize).Find(&users).Error; err != nil {
+	if err := query.Offset(offset).Limit(paginate.PageSize).Find(&myModel).Error; err != nil {
 		return nil, 0, err
 	}
 
-	return users, total, nil
+	return myModel, total, nil
 }
 
 func (db dbProductRepository) GetByColumns(columns []string, values []string) ([]*models.Product, error) {
