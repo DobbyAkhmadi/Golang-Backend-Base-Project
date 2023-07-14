@@ -5,6 +5,7 @@ import (
 	"backend/pkg/utils"
 )
 
+// TransactionService is an interface that defines the contract for interacting with transaction-related functionality.
 type TransactionService interface {
 	CreateTransaction(transaction *models.CreateTransactionDTO) (*models.GetTransactionDTO, error)
 	GetTransactionByID(id string) (*models.GetTransactionDTO, error)

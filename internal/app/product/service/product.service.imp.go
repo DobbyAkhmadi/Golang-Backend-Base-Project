@@ -18,7 +18,7 @@ func NewProductService(productRepository *repository.ProductRepository) *Product
 }
 
 func (s *ProductServiceImpl) GetPagination(paginate utils.SetPaginationDto) (utils.GetGlobalResponsePaginationDto, error) {
-	// Retrieve paginated products from the repository
+	// Retrieve paginated product from the repository
 	products, total, err := s.productRepository.GetPagination(paginate)
 	if err != nil {
 		return utils.GetGlobalResponsePaginationDto{}, err
@@ -76,13 +76,13 @@ func (s *ProductServiceImpl) Create(request *models.CreateProductRequestDTO) (mo
 	return dto, nil
 }
 
-func (s *ProductServiceImpl) Update(request *models.UpdateProductRequestDTO) (models.GetProductResponseDTO, error) {
+func (s *ProductServiceImpl) Update(id string, request *models.UpdateProductRequestDTO) (models.GetProductResponseDTO, error) {
 	// Add business logic for creating a Product
 	// Validate the Product, perform any necessary transformations, and interact with the repository
 	// Return any relevant errors
 
 	// check existing data
-	updateProduct, err := s.productRepository.GetByID(request.ID)
+	updateProduct, err := s.productRepository.GetByID(id)
 	if err != nil {
 		return models.GetProductResponseDTO{}, err
 	}

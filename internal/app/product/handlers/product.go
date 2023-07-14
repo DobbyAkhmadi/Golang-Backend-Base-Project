@@ -76,17 +76,28 @@ func (h *ProductHandler) CreateNewProduct(ctx *fiber.Ctx) error {
 // @Tags Product
 // @Accept json
 // @Produce json
+// @Param id path string true "Product ID"
 // @Param request body models.UpdateProductRequestDTO true "Request body containing product details"
 // @Success 200 {object} utils.Response
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Security ApiKeyAuth
 // @Router /api/v1/product [put]
-func (h *ProductHandler) UpdateExistingProduct(c *fiber.Ctx) error {
+func (h *ProductHandler) UpdateExistingProduct(ctx *fiber.Ctx) error {
+	// Get the service.product ID from the request parameters
+	id := ctx.Params("id")
+
+	// Validate the service.product ID
+	if id == "" {
+		// Return a response with a validation error
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid service.product ID",
+		})
+	}
 	// request new data from http
 	request := new(models.UpdateProductRequestDTO)
-	if err := c.BodyParser(request); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+	if err := ctx.BodyParser(request); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
 			Status: "Bad Request",
 			Errors: err,
@@ -96,7 +107,7 @@ func (h *ProductHandler) UpdateExistingProduct(c *fiber.Ctx) error {
 	validate := validator.New()
 	if err := validate.Struct(request); err != nil {
 		validationErrors := err.(validator.ValidationErrors)
-		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
 			Status: "Bad Request",
 			Errors: validationErrors,
@@ -104,9 +115,9 @@ func (h *ProductHandler) UpdateExistingProduct(c *fiber.Ctx) error {
 	}
 
 	// Call the UpdateProduct method of the productService
-	response, err := h.productService.Update(request)
+	response, err := h.productService.Update(id, request)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusNotFound,
 			Status: "service.product not found",
 			Errors: err,
@@ -114,16 +125,16 @@ func (h *ProductHandler) UpdateExistingProduct(c *fiber.Ctx) error {
 	}
 
 	// return the response into JSON
-	return c.JSON(utils.Response{
+	return ctx.JSON(utils.Response{
 		Code:   fiber.StatusOK,
 		Status: "OK",
 		Data:   response,
 	})
 }
 
-// GetPaginationProduct get pagination all products.
+// GetPaginationProduct get pagination all product.
 // @Summary Get Pagination Product
-// @Description Get All Paginated products with the provided request data
+// @Description Get All Paginated product with the provided request data
 // @Tags Product
 // @Accept json
 // @Produce json
@@ -176,7 +187,7 @@ func (h *ProductHandler) GetPaginationProduct(ctx *fiber.Ctx) error {
 		SortBy:       sortBy,
 	}
 
-	// Retrieve the paginated products from the service
+	// Retrieve the paginated product from the service
 	response, err := h.productService.GetPagination(pagination)
 	if err != nil {
 		// Return a response with an error message

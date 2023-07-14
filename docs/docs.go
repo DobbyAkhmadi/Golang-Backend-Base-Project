@@ -55,7 +55,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get All Paginated products with the provided request data",
+                "description": "Get All Paginated product with the provided request data",
                 "consumes": [
                     "application/json"
                 ],

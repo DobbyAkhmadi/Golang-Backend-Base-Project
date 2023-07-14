@@ -24,7 +24,7 @@ func main() {
 
 	// Create a new Fiber instance
 	app := fiber.New(fiber.Config{
-		AppName:     "TRANSACTION SERVICE Version : " + config.Config.GetString("SERVER.VERSION"),
+		AppName:     "USER SERVICE Version : " + config.Config.GetString("SERVER.VERSION"),
 		ReadTimeout: time.Second * time.Duration(readTimeoutSecondsCount),
 		IdleTimeout: idleTimeout,
 	})
@@ -35,7 +35,7 @@ func main() {
 	// Use logger
 	app.Use(logger.New())
 
-	addr := config.Config.GetString("TRANSACTION.SERVICE.HOST") + ":" + config.Config.GetString("TRANSACTION.SERVICE.PORT")
+	addr := config.Config.GetString("USER.SERVICE.HOST") + ":" + config.Config.GetString("USER.SERVICE.PORT")
 
 	// start server with graceful shutdown
 	utils.StartServerWithGracefulShutdown(app, addr)

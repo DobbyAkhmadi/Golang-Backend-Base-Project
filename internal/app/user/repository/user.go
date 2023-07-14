@@ -3,6 +3,7 @@ package repository
 import (
 	models2 "backend/internal/app/user/models"
 	"backend/pkg/utils"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
@@ -47,7 +48,7 @@ func (db *dbUserRepository) GetByID(id string) (*models2.User, error) {
 
 func (db *dbUserRepository) Delete(id string) error {
 	user := &models2.User{}
-	if err := db.connection.Where("id = ?", id).First(user).Error; err != nil {
+	if err := db.connection.Where("id = ?", id).Delete(user).Error; err != nil {
 		return err
 	}
 	return nil
@@ -82,4 +83,30 @@ func (db *dbUserRepository) GetPagination(paginate utils.SetPaginationDto) ([]*m
 	}
 
 	return myModel, total, nil
+}
+
+// NewUserRepository creates a new instance of the NewUserRepository.
+// It performs necessary database migrations and generates fake data if in the development environment.
+func NewUserRepository() UserRepository {
+	// Check if the database connection is already established
+	if utils.DB == nil {
+		// Connect to the database
+		database, _ := utils.Connect()
+		if database != nil {
+			log.Error(database)
+		}
+	}
+
+	// Perform auto-migration for User table
+	model := models2.User{}
+	err := model.AutoMigrate(utils.DB)
+	if err != nil {
+		panic(err)
+	}
+	log.Info("Migration completed successfully!")
+
+	// Return the dbUserRepository instance
+	return &dbUserRepository{
+		connection: utils.DB,
+	}
 }

@@ -101,7 +101,7 @@ func (h *TransactionHandler) GetPaginationTransaction(ctx *fiber.Ctx) error {
 		SortBy:       sortBy,
 	}
 
-	// Retrieve the paginated products from the service
+	// Retrieve the paginated product from the service
 	response, err := h.transactionService.GetPagination(pagination)
 	if err != nil {
 		// Return a response with an error message

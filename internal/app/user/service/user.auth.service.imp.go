@@ -10,6 +10,11 @@ type UserAuthServiceImpl struct {
 	userRepository repository.UserRepository
 }
 
+func (u UserAuthServiceImpl) Login(dto models.AuthLoginRequestDTO) (models.AuthLoginResponseDTO, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 // NewUserAuthService creates a new instance of UserServiceImpl.
 func NewUserAuthService(userRepository *repository.UserRepository) *UserAuthServiceImpl {
 	return (*UserAuthServiceImpl)(&UserServiceImpl{

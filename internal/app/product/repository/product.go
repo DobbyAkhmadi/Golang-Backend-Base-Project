@@ -28,7 +28,7 @@ type dbProductRepository struct {
 
 func (db dbProductRepository) Delete(id string) error {
 	product := &models.Product{}
-	if err := db.connection.Where("id = ?", id).First(product).Error; err != nil {
+	if err := db.connection.Where("id = ?", id).Delete(product).Error; err != nil {
 		return err
 	}
 	return nil
@@ -89,7 +89,7 @@ func (db dbProductRepository) GetByColumns(columns []string, values []string) ([
 		query = query.Where(columns[i]+" = ?", values[i])
 	}
 
-	// Execute the query and retrieve the matching products
+	// Execute the query and retrieve the matching product
 	if err := query.Find(&products).Error; err != nil {
 		return nil, err
 	}
