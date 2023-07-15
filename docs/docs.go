@@ -48,6 +48,64 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/User": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update existing User with the provided request data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update existing User",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body containing User details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateUserRequestDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/product": {
             "get": {
                 "security": [
@@ -133,6 +191,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update existing product",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Request body containing product details",
                         "name": "request",
@@ -409,20 +474,242 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get All Paginated user with the provided request data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get Pagination user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page index",
+                        "name": "page_index",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Global search term",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort by field",
+                        "name": "sort_by",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new User with the provided request data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a new User",
+                "parameters": [
+                    {
+                        "description": "Request body containing User details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateUserRequestDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a user by the provided ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get user by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a user by the provided ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Delete user by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "models.CreateProductRequestDTO": {
             "type": "object",
+            "required": [
+                "description",
+                "name",
+                "stock"
+            ],
             "properties": {
                 "description": {
+                    "description": "Description of the product (required)",
                     "type": "string"
                 },
                 "name": {
+                    "description": "Name of the product (required)",
                     "type": "string"
                 },
                 "stock": {
-                    "type": "integer"
+                    "description": "Stock count of the product (required, minimum value: 0)",
+                    "type": "integer",
+                    "minimum": 0
                 }
             }
         },
@@ -454,20 +741,98 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UpdateProductRequestDTO": {
+        "models.CreateUserRequestDTO": {
             "type": "object",
+            "required": [
+                "password"
+            ],
             "properties": {
-                "description": {
+                "address": {
+                    "description": "Address of the user (optional)",
                     "type": "string"
                 },
-                "id": {
+                "email": {
+                    "description": "Email of the user (optional, must be a valid email address)",
+                    "type": "string"
+                },
+                "first_name": {
+                    "description": "FirstName of the user (optional)",
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "LastName of the user (optional)",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Password of the user (required)",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "PhoneNumber of the user (optional)",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Username of the user (optional)",
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateProductRequestDTO": {
+            "type": "object",
+            "required": [
+                "description",
+                "name",
+                "stock"
+            ],
+            "properties": {
+                "description": {
+                    "description": "Description of the product (required)",
                     "type": "string"
                 },
                 "name": {
+                    "description": "Name of the product (required)",
                     "type": "string"
                 },
                 "stock": {
-                    "type": "integer"
+                    "description": "Stock count of the product (required, minimum value: 0)",
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        },
+        "models.UpdateUserRequestDTO": {
+            "type": "object",
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "address": {
+                    "description": "Address of the user (optional)",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "Email of the user (optional, must be a valid email address)",
+                    "type": "string"
+                },
+                "first_name": {
+                    "description": "FirstName of the user (optional)",
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "LastName of the user (optional)",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Password of the user (required)",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "PhoneNumber of the user (optional)",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Username of the user (optional)",
+                    "type": "string"
                 }
             }
         },
