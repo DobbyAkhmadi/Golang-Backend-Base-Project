@@ -42,6 +42,7 @@ func (u *UUIDPrimaryKey) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 type GetGlobalResponsePaginationDto struct {
+	Header    HeaderDto   `json:"header"`
 	Code      int         `json:"code"`
 	Status    string      `json:"status"`
 	Data      interface{} `json:"data,omitempty"`
@@ -55,4 +56,9 @@ type SetPaginationDto struct {
 	PageSize     int    `json:"page_size"`
 	GlobalSearch string `json:"search"`
 	SortBy       string `json:"sort_by"`
+}
+
+type HeaderDto struct {
+	Milliseconds string `json:"latency"`
+	Message      string `json:"message"`
 }
