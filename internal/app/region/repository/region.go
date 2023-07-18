@@ -10,7 +10,14 @@ import (
 
 // RegionRepository is an interface that defines the contract for accessing and manipulating Region data.
 type RegionRepository interface {
-	GetPaginationVillage(paginate utils.SetPaginationDto) ([]*models2.Village, int64, error)
+	SaveV(model *models2.Village) (*models2.Village, error)
+	SaveP(model *models2.Province) (*models2.Province, error)
+	SaveD(model *models2.District) (*models2.District, error)
+	SaveR(model *models2.Regency) (*models2.Regency, error)
+	GetPaginationV(paginate utils.SetPaginationDto) ([]*models2.Village, int64, error)
+	GetPaginationP(paginate utils.SetPaginationDto) ([]*models2.Province, int64, error)
+	GetPaginationD(paginate utils.SetPaginationDto) ([]*models2.District, int64, error)
+	GetPaginationR(paginate utils.SetPaginationDto) ([]*models2.Regency, int64, error)
 }
 
 // dbRegionRepository implements the RegionRepository interface.
@@ -67,7 +74,7 @@ func NewRegionRepository() RegionRepository {
 	}
 }
 
-func (db dbRegionRepository) GetPaginationVillage(paginate utils.SetPaginationDto) ([]*models2.Village, int64, error) {
+func (db dbRegionRepository) GetPaginationV(paginate utils.SetPaginationDto) ([]*models2.Village, int64, error) {
 	offset := (paginate.PageIndex - 1) * paginate.PageSize
 	var myModel []*models2.Village
 	var total int64
@@ -96,4 +103,123 @@ func (db dbRegionRepository) GetPaginationVillage(paginate utils.SetPaginationDt
 	}
 
 	return myModel, total, nil
+}
+func (db dbRegionRepository) GetPaginationP(paginate utils.SetPaginationDto) ([]*models2.Province, int64, error) {
+	offset := (paginate.PageIndex - 1) * paginate.PageSize
+	var myModel []*models2.Province
+	var total int64
+
+	query := db.connection.Model(&models2.Province{})
+
+	// Apply sorting
+	if paginate.SortBy != "" {
+		query = query.Order(paginate.SortBy)
+	}
+
+	// Apply global search
+	if paginate.GlobalSearch != "" {
+		search := "%" + paginate.GlobalSearch + "%"
+		query = query.Where("name LIKE ? OR description LIKE ?", search, search)
+	}
+
+	// Count total records
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// Apply pagination
+	if err := query.Offset(offset).Limit(paginate.PageSize).Find(&myModel).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return myModel, total, nil
+}
+func (db dbRegionRepository) GetPaginationD(paginate utils.SetPaginationDto) ([]*models2.District, int64, error) {
+	offset := (paginate.PageIndex - 1) * paginate.PageSize
+	var myModel []*models2.District
+	var total int64
+
+	query := db.connection.Model(&models2.District{})
+
+	// Apply sorting
+	if paginate.SortBy != "" {
+		query = query.Order(paginate.SortBy)
+	}
+
+	// Apply global search
+	if paginate.GlobalSearch != "" {
+		search := "%" + paginate.GlobalSearch + "%"
+		query = query.Where("name LIKE ? OR description LIKE ?", search, search)
+	}
+
+	// Count total records
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// Apply pagination
+	if err := query.Offset(offset).Limit(paginate.PageSize).Find(&myModel).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return myModel, total, nil
+}
+func (db dbRegionRepository) GetPaginationR(paginate utils.SetPaginationDto) ([]*models2.Regency, int64, error) {
+	offset := (paginate.PageIndex - 1) * paginate.PageSize
+	var myModel []*models2.Regency
+	var total int64
+
+	query := db.connection.Model(&models2.Regency{})
+
+	// Apply sorting
+	if paginate.SortBy != "" {
+		query = query.Order(paginate.SortBy)
+	}
+
+	// Apply global search
+	if paginate.GlobalSearch != "" {
+		search := "%" + paginate.GlobalSearch + "%"
+		query = query.Where("name LIKE ? OR description LIKE ?", search, search)
+	}
+
+	// Count total records
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// Apply pagination
+	if err := query.Offset(offset).Limit(paginate.PageSize).Find(&myModel).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return myModel, total, nil
+}
+
+func (db dbRegionRepository) SaveV(model *models2.Village) (*models2.Village, error) {
+	if err := db.connection.Create(model).Error; err != nil {
+		return nil, err
+	}
+
+	return model, nil
+}
+func (db dbRegionRepository) SaveP(model *models2.Province) (*models2.Province, error) {
+	if err := db.connection.Create(model).Error; err != nil {
+		return nil, err
+	}
+
+	return model, nil
+}
+func (db dbRegionRepository) SaveD(model *models2.District) (*models2.District, error) {
+	if err := db.connection.Create(model).Error; err != nil {
+		return nil, err
+	}
+
+	return model, nil
+}
+func (db dbRegionRepository) SaveR(model *models2.Regency) (*models2.Regency, error) {
+	if err := db.connection.Create(model).Error; err != nil {
+		return nil, err
+	}
+
+	return model, nil
 }

@@ -5,17 +5,16 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func initProvinceSeed() {
+func initProvinceSeed() error {
 	// Open the CSV file
 	file, err := os.Open("./internal/storage/provinces.csv")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer func(file *os.File) {
 		err := file.Close()
@@ -27,7 +26,7 @@ func initProvinceSeed() {
 	// Read all contents of the CSV file
 	buf := new(bytes.Buffer)
 	if _, err := buf.ReadFrom(file); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	// Convert the buffer to a string
@@ -40,13 +39,13 @@ func initProvinceSeed() {
 	csvData = strings.TrimPrefix(csvData, bom)
 
 	// Create a CSV reader with a custom delimiter ';'
-	reader := csv.NewReader(bytes.NewBufferString(csvData))
-	reader.Comma = ';'
+	newReader := csv.NewReader(bytes.NewBufferString(csvData))
+	newReader.Comma = ';'
 
 	// Read all records from the CSV file
-	records, err := reader.ReadAll()
+	records, err := newReader.ReadAll()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	// Create the Province repository
 	//	provinceRepo := repository.NewRegionRepository(db)
@@ -57,7 +56,7 @@ func initProvinceSeed() {
 		// Convert the string to an integer
 		id, err := strconv.Atoi(record[0])
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
 		province := models.Province{
@@ -65,12 +64,13 @@ func initProvinceSeed() {
 			Name: record[1],
 		}
 		provinces = append(provinces, province)
-
 	}
 
 	// Print the imported data
 	for _, province := range provinces {
 		fmt.Printf("ID: %d, Name: %s\n", province.ID, province.Name)
 	}
+
+	return nil
 
 }
