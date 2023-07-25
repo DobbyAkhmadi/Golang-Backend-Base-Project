@@ -19,7 +19,7 @@ func SetupRoutesRegion(app *fiber.App) {
 
 	regionGroup := app.Group("/api/v1/region")
 	regionGroup.Get("/village", regionHandler.GetPaginationVillage)
-	regionGroup.Get("/province", regionHandler.GetPaginationVillage)
-	regionGroup.Get("/regency", regionHandler.GetPaginationVillage)
-	regionGroup.Get("/district", regionHandler.GetPaginationVillage)
+	regionGroup.Get("/province", regionHandler.GetPaginationProvince)
+	regionGroup.Get("/regency", regionHandler.GetPaginationRegency)
+	regionGroup.Get("/district", regionHandler.GetPaginationDistrict)
 }
