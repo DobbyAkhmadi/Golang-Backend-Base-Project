@@ -5,6 +5,7 @@ import (
 	"backend/internal/app/transaction/routes"
 	"backend/pkg/utils"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"log"
 	"strconv"
@@ -28,6 +29,18 @@ func main() {
 		ReadTimeout: time.Second * time.Duration(readTimeoutSecondsCount),
 		IdleTimeout: idleTimeout,
 	})
+
+	// Define rate limiting configuration
+	limiterConfig := limiter.Config{
+		Max:        10,              // Maximum number of requests allowed per duration
+		Expiration: 1 * time.Minute, // Duration for the rate limit window
+		KeyGenerator: func(c *fiber.Ctx) string {
+			return c.IP() // Use client IP as the key for rate limiting
+		},
+	}
+
+	// Use the rate limiting middleware
+	app.Use(limiter.New(limiterConfig))
 
 	// Initialize routes
 	routes.SetupRoutesTransactionRoutes(app)
