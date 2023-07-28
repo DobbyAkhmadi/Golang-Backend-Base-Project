@@ -43,7 +43,7 @@ func (h *RegionHandler) GetPaginationVillage(ctx *fiber.Ctx) error {
 	if pageIndex == "" || pageSize == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required query parameters",
+			"error": "Missing required query parameters | paginate village",
 		})
 	}
 
@@ -52,7 +52,7 @@ func (h *RegionHandler) GetPaginationVillage(ctx *fiber.Ctx) error {
 	if err != nil || pageIndexInt < 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page index",
+			"error": "Invalid page index | paginate village",
 		})
 	}
 
@@ -60,7 +60,7 @@ func (h *RegionHandler) GetPaginationVillage(ctx *fiber.Ctx) error {
 	if err != nil || pageSizeInt <= 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page size",
+			"error": "Invalid page size | paginate village",
 		})
 	}
 
@@ -112,7 +112,7 @@ func (h *RegionHandler) GetPaginationProvince(ctx *fiber.Ctx) error {
 	if pageIndex == "" || pageSize == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required query parameters",
+			"error": "Missing required query parameters | paginate province",
 		})
 	}
 
@@ -121,7 +121,7 @@ func (h *RegionHandler) GetPaginationProvince(ctx *fiber.Ctx) error {
 	if err != nil || pageIndexInt < 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page index",
+			"error": "Invalid page index | paginate province",
 		})
 	}
 
@@ -129,7 +129,7 @@ func (h *RegionHandler) GetPaginationProvince(ctx *fiber.Ctx) error {
 	if err != nil || pageSizeInt <= 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page size",
+			"error": "Invalid page size | paginate province",
 		})
 	}
 
@@ -181,7 +181,7 @@ func (h *RegionHandler) GetPaginationDistrict(ctx *fiber.Ctx) error {
 	if pageIndex == "" || pageSize == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required query parameters",
+			"error": "Missing required query parameters | paginate district",
 		})
 	}
 
@@ -190,7 +190,7 @@ func (h *RegionHandler) GetPaginationDistrict(ctx *fiber.Ctx) error {
 	if err != nil || pageIndexInt < 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page index",
+			"error": "Invalid page index | paginate district",
 		})
 	}
 
@@ -198,7 +198,7 @@ func (h *RegionHandler) GetPaginationDistrict(ctx *fiber.Ctx) error {
 	if err != nil || pageSizeInt <= 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page size",
+			"error": "Invalid page size | paginate district",
 		})
 	}
 
@@ -250,7 +250,7 @@ func (h *RegionHandler) GetPaginationRegency(ctx *fiber.Ctx) error {
 	if pageIndex == "" || pageSize == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required query parameters",
+			"error": "Missing required query parameters | paginate regency",
 		})
 	}
 
@@ -259,7 +259,7 @@ func (h *RegionHandler) GetPaginationRegency(ctx *fiber.Ctx) error {
 	if err != nil || pageIndexInt < 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page index",
+			"error": "Invalid page index | paginate regency",
 		})
 	}
 
@@ -267,7 +267,7 @@ func (h *RegionHandler) GetPaginationRegency(ctx *fiber.Ctx) error {
 	if err != nil || pageSizeInt <= 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page size",
+			"error": "Invalid page size | paginate regency",
 		})
 	}
 

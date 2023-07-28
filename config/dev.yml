@@ -22,11 +22,19 @@ USER.SERVICE:
   SERVER_READ_TIMEOUT: 60
 
 DB:
+  TYPE: "postgres"
   ADDRESS: 127.0.0.1
   PORT: 5432
   USERNAME: postgres
   PASSWORD: "123456"
   DATABASE: "db_backend"
 
-JWT:
-  TOKEN_KEY: ""
+sonar:
+  projectKey: Golang-Backend-Base-Project
+  projectName: Golang-Backend-Base-Project
+  projectVersion: 1.0
+  sources: .
+  language: go
+  sourceEncoding: UTF-8
+  host.url: http://localhost:9191
+  login: d1001350590e628c92a101f0d5d75335ee8581ee

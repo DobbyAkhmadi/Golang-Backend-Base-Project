@@ -19,7 +19,7 @@ type User struct {
 }
 
 // AutoMigrate migrates the User table if it doesn't exist in the database.
-// It uses the provided GORM service.transaction (`tx`) to perform the migration.
+// It uses the provided GORM service.transaction (`tx`) to perform the migrations.
 func (v *User) AutoMigrate(tx *gorm.DB) (err error) {
 	if !tx.Migrator().HasTable(&v) {
 		err = tx.AutoMigrate(&v)

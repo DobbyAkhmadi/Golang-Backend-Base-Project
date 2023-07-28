@@ -3,6 +3,7 @@ package repository
 import (
 	"backend/internal/app/product/models"
 	"backend/pkg/utils"
+	"backend/platform/database"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -101,17 +102,17 @@ func (db dbProductRepository) GetByColumns(columns []string, values []string) ([
 // It performs necessary database migrations and generates fake data if in the development environment.
 func NewProductRepository() ProductRepository {
 	// Check if the database connection is already established
-	if utils.DB == nil {
+	if database.DB == nil {
 		// Connect to the database
-		database, _ := utils.Connect()
+		database, _ := database.Connect()
 		if database != nil {
 			log.Error(database)
 		}
 	}
 
-	// Perform auto-migration for Product table
+	// Perform auto-migrations for Product table
 	model := models.Product{}
-	err := model.AutoMigrate(utils.DB)
+	err := model.AutoMigrate(database.DB)
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +120,7 @@ func NewProductRepository() ProductRepository {
 
 	// Return the dbProductRepository instance
 	return &dbProductRepository{
-		connection: utils.DB,
+		connection: database.DB,
 	}
 }
 

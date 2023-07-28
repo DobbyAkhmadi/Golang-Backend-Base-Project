@@ -11,6 +11,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: db_backend
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "db_backend" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   # prometheus - Get Metrics for Monitoring System
   prometheus:
@@ -49,7 +54,7 @@ services:
       image: prom/alertmanager:latest
       container_name: "alertmanager"
       ports:
-        - 9093:9093
+        - "9093:9093"
       volumes:
         - ./etc/alertmanager/:/etc/alertmanager/
       command:
@@ -68,4 +73,18 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./portainer-data:/data
     ports:
-      - 9000:9000
+      - "9000:9000"
+
+  # Redis - Cache Container
+  redis:
+    image: redis:6.2.6-alpine3.14
+    restart: on-failure
+    volumes:
+      - ../tmp/redis:/data
+    ports:
+      - "63799:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20

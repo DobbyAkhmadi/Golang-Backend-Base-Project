@@ -3,6 +3,7 @@ package repository
 import (
 	models2 "backend/internal/app/user/models"
 	"backend/pkg/utils"
+	"backend/platform/database"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -89,17 +90,17 @@ func (db *dbUserRepository) GetPagination(paginate utils.SetPaginationDto) ([]*m
 // It performs necessary database migrations and generates fake data if in the development environment.
 func NewUserRepository() UserRepository {
 	// Check if the database connection is already established
-	if utils.DB == nil {
+	if database.DB == nil {
 		// Connect to the database
-		database, _ := utils.Connect()
+		database, _ := database.Connect()
 		if database != nil {
 			log.Error(database)
 		}
 	}
 
-	// Perform auto-migration for User table
+	// Perform auto-migrations for User table
 	model := models2.User{}
-	err := model.AutoMigrate(utils.DB)
+	err := model.AutoMigrate(database.DB)
 	if err != nil {
 		panic(err)
 	}
@@ -107,6 +108,6 @@ func NewUserRepository() UserRepository {
 
 	// Return the dbUserRepository instance
 	return &dbUserRepository{
-		connection: utils.DB,
+		connection: database.DB,
 	}
 }

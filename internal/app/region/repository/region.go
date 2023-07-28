@@ -3,7 +3,8 @@ package repository
 import (
 	models2 "backend/internal/app/region/models"
 	"backend/pkg/utils"
-	"backend/platform/seeds"
+	"backend/platform/database"
+	"backend/platform/seeders"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -29,48 +30,48 @@ type dbRegionRepository struct {
 // It performs necessary database migrations and generates fake data if in the development environment.
 func NewRegionRepository() RegionRepository {
 	// Check if the database connection is already established
-	if utils.DB == nil {
+	if database.DB == nil {
 		// Connect to the database
-		database, _ := utils.Connect()
+		database, _ := database.Connect()
 		if database != nil {
 			log.Error(database)
 		}
 	}
 
-	// Perform auto-migration for Region table
+	// Perform auto-migrations for Region table
 	mProvince := models2.Province{}
-	pErr := mProvince.AutoMigrate(utils.DB)
+	pErr := mProvince.AutoMigrate(database.DB)
 	if pErr != nil {
 		panic(pErr)
 	}
 
-	// Perform auto-migration for Region table
+	// Perform auto-migrations for Region table
 	mRegency := models2.Regency{}
-	rErr := mRegency.AutoMigrate(utils.DB)
+	rErr := mRegency.AutoMigrate(database.DB)
 	if rErr != nil {
 		panic(rErr)
 	}
 
-	// Perform auto-migration for Region table
+	// Perform auto-migrations for Region table
 	mDistrict := models2.District{}
-	dErr := mDistrict.AutoMigrate(utils.DB)
+	dErr := mDistrict.AutoMigrate(database.DB)
 	if dErr != nil {
 		panic(dErr)
 	}
 
-	// Perform auto-migration for Region table
+	// Perform auto-migrations for Region table
 	mVillage := models2.Village{}
-	vErr := mVillage.AutoMigrate(utils.DB)
+	vErr := mVillage.AutoMigrate(database.DB)
 	if vErr != nil {
 		panic(vErr)
 	}
 
 	log.Info("Migration completed successfully!")
 
-	seeds.MainSeed("region")
+	seeders.MainSeed("region")
 	// Return the dbRegionRepository instance
 	return &dbRegionRepository{
-		connection: utils.DB,
+		connection: database.DB,
 	}
 }
 

@@ -4,6 +4,7 @@ import (
 	"backend/config"
 	"backend/internal/app/transaction/routes"
 	"backend/pkg/utils"
+	"backend/platform/database"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -16,7 +17,7 @@ const idleTimeout = 5 * time.Second
 
 func main() {
 	// Connect to database
-	_, err := utils.Connect()
+	_, err := database.Connect()
 	if err != nil {
 		log.Fatal(err)
 	}

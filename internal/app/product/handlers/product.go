@@ -4,6 +4,7 @@ import (
 	"backend/internal/app/product/models"
 	"backend/internal/app/product/service"
 	"backend/pkg/utils"
+	"errors"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"strconv"
@@ -37,17 +38,18 @@ func (h *ProductHandler) CreateNewProduct(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(request); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: "Bad Request | CreateProductRequestDTO",
 			Errors: err,
 		})
 	}
 	// Validate the Product struct
 	validate := validator.New()
 	if err := validate.Struct(request); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: "Bad Request | Validate Process",
 			Errors: validationErrors,
 		})
 	}
@@ -99,17 +101,18 @@ func (h *ProductHandler) UpdateExistingProduct(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(request); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: "Bad Request | UpdateProductRequestDTO",
 			Errors: err,
 		})
 	}
 	// Validate the Product struct
 	validate := validator.New()
 	if err := validate.Struct(request); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: "Bad Request | Validate Process",
 			Errors: validationErrors,
 		})
 	}
@@ -167,7 +170,7 @@ func (h *ProductHandler) GetPaginationProduct(ctx *fiber.Ctx) error {
 	if err != nil || pageIndexInt < 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page index",
+			"error": "Invalid page index | paginate product",
 		})
 	}
 
@@ -175,7 +178,7 @@ func (h *ProductHandler) GetPaginationProduct(ctx *fiber.Ctx) error {
 	if err != nil || pageSizeInt <= 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page size",
+			"error": "Invalid page size | paginate product",
 		})
 	}
 
@@ -221,7 +224,7 @@ func (h *ProductHandler) GetProductByID(ctx *fiber.Ctx) error {
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid service.product ID",
+			"error": "Invalid ID | Get Product ID",
 		})
 	}
 
@@ -262,7 +265,7 @@ func (h *ProductHandler) DeleteProductByID(ctx *fiber.Ctx) error {
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid service.product ID",
+			"error": "Invalid ID | Delete Product ID",
 		})
 	}
 

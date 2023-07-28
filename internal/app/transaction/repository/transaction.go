@@ -3,6 +3,7 @@ package repository
 import (
 	models2 "backend/internal/app/transaction/models"
 	"backend/pkg/utils"
+	"backend/platform/database"
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -76,24 +77,24 @@ func (r *dbTransactionRepository) GetTransactionByID(id uuid.UUID) (models2.Tran
 
 func NewTransactionRepository() TransactionRepository {
 	// Check if the database connection is already established
-	if utils.DB == nil {
+	if database.DB == nil {
 		// Connect to the database
-		database, _ := utils.Connect()
+		database, _ := database.Connect()
 		if database != nil {
 			log.Error(database)
 		}
 	}
 
-	// Perform auto-migration for Transaction table
+	// Perform auto-migrations for Transaction table
 	transaction := models2.Transaction{}
-	err := transaction.AutoMigrate(utils.DB)
+	err := transaction.AutoMigrate(database.DB)
 	if err != nil {
 		panic(err)
 	}
 
-	// Perform auto-migration for TransactionDetail table
+	// Perform auto-migrations for TransactionDetail table
 	transactionDetail := models2.TransactionDetail{}
-	err_ := transactionDetail.AutoMigrate(utils.DB)
+	err_ := transactionDetail.AutoMigrate(database.DB)
 	if err_ != nil {
 		panic(err_)
 	}
@@ -102,7 +103,7 @@ func NewTransactionRepository() TransactionRepository {
 
 	// Return the dbProductRepository instance
 	return &dbTransactionRepository{
-		connection: utils.DB,
+		connection: database.DB,
 	}
 }
 func (r *dbTransactionRepository) CreateTransaction(transaction *models2.Transaction, details []*models2.TransactionDetail) (uuid.UUID, error) {
