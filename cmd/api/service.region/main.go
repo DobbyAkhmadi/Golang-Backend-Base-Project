@@ -2,7 +2,7 @@ package main
 
 import (
 	"backend/config"
-	"backend/internal/app/REGION/routes"
+	"backend/internal/app/region/routes"
 	"backend/pkg/utils"
 	"backend/platform/database"
 	"github.com/gofiber/fiber/v2"
