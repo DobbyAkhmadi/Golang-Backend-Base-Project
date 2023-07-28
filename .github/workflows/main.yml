@@ -60,7 +60,8 @@ jobs:
       - run: echo Should run integration tests.
 
   sonarCloudTrigger:
-    needs: [test,integrationTest]
+    if: ${{ always() }}
+    needs: [ test, integrationTest ]
     name: SonarCloud Code Analysis
     runs-on: ubuntu-latest
     steps:
