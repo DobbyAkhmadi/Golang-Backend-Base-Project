@@ -14,41 +14,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
           go-version: 1.19
-
       - name: Build
         run: go build -v ./...
 
-#    test:
-#    name: Automation Unit Test
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#
-#      - name: Check out code into the Go module directory
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Go
-#        uses: actions/setup-go@v2
-#        with:
-#          go-version: 1.20
-#
-#      - name: Test
-#        run: go test -v ./...
+  test:
+    name: Automation Unit Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20
+      - name: Test
+        run: go test -v ./...
 
-#    deploy:
-#    name: Automation Deploy
-#    needs: test
-#    runs-on: ubuntu-latest
-#    steps:
-#
-#      - name: Check out code
-#        uses: actions/checkout@v2
-#
+  deploy:
+    name: Automation Deploy
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
 #      - name: Install SSH key
 #        uses: webfactory/ssh-agent@v0.5.3
 #        with:
