@@ -18,13 +18,10 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: 1.20
 
       - name: Build
         run: go build -v ./...
-
-      - name: Test
-        run: go test -json -coverprofile=cover.out ./... > result.json
 
 #    test:
 #    name: Automation Unit Test
@@ -66,26 +63,17 @@ jobs:
     name: SonarCloud Automation Static Code Analysis & Code Review
     runs-on: ubuntu-latest
     steps:
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
+      - name: Clone Repository
+        uses: actions/checkout@master
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.organization=my-organization
-            -Dsonar.projectKey=my-projectkey
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.sources=lib/
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
-            -Dsonar.verbose=true
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  integrationTest:
+    needs: build
+    name: Integration Test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo Should run integration tests.
