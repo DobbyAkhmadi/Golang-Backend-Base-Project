@@ -10,7 +10,7 @@ on:
 jobs:
 
   build:
-    name: Build
+    name: Automation Build
     runs-on: ubuntu-latest
     steps:
 
@@ -28,8 +28,8 @@ jobs:
       - name: Build
         run: go build -v .
 
-#  test:
-#    name: Test
+#    test:
+#    name: Automation Unit Test
 #    needs: build
 #    runs-on: ubuntu-latest
 #    steps:
@@ -45,8 +45,8 @@ jobs:
 #      - name: Test
 #        run: go test -v ./...
 
-#  deploy:
-#    name: Deploy
+#    deploy:
+#    name: Automation Deploy
 #    needs: test
 #    runs-on: ubuntu-latest
 #    steps:
@@ -65,7 +65,7 @@ jobs:
 
   sonarCloudTrigger:
     needs: build
-    name: SonarCloud Trigger
+    name: SonarCloud Automation Static Code Analysis & Code Review
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repository
