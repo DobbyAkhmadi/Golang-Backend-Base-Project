@@ -1,5 +1,12 @@
-# Golang Template Backend
+# Golang Template Backend For Product and Project
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=DobbyAkhmadi_Golang-Backend-Base-Project)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DobbyAkhmadi_Golang-Backend-Base-Project&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DobbyAkhmadi_Golang-Backend-Base-Project)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DobbyAkhmadi_Golang-Backend-Base-Project&metric=bugs)](https://sonarcloud.io/summary/new_code?id=DobbyAkhmadi_Golang-Backend-Base-Project)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DobbyAkhmadi_Golang-Backend-Base-Project&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=DobbyAkhmadi_Golang-Backend-Base-Project)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DobbyAkhmadi_Golang-Backend-Base-Project&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=DobbyAkhmadi_Golang-Backend-Base-Project)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DobbyAkhmadi_Golang-Backend-Base-Project&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DobbyAkhmadi_Golang-Backend-Base-Project)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=DobbyAkhmadi_Golang-Backend-Base-Project&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=DobbyAkhmadi_Golang-Backend-Base-Project)
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/powerman/go-service-example)](https://pkg.go.dev/github.com/powerman/go-service-example)
 [![Project Layout](https://img.shields.io/badge/Standard%20Go-Project%20Layout-informational)](https://github.com/golang-standards/project-layout)
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
