@@ -69,6 +69,7 @@ func (u *UserServiceImpl) Create(request *models2.CreateUserRequestDTO) (models2
 	newComp.Address = request.Address
 	newComp.Username = request.Username
 	newComp.Email = request.Email
+	newComp.Password = request.Password
 
 	// return error when insert duplicate values
 	result, err := u.userRepository.Save(newComp)
@@ -97,6 +98,7 @@ func (u *UserServiceImpl) Update(id string, request *models2.UpdateUserRequestDT
 	update.Address = request.Address
 	update.Username = request.Username
 	update.Email = request.Email
+	update.Password = request.Password
 
 	// return error when insert duplicate values
 	result, err := u.userRepository.Update(update)

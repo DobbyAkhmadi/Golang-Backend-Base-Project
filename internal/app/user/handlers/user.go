@@ -4,6 +4,7 @@ import (
 	models2 "backend/internal/app/user/models"
 	"backend/internal/app/user/service"
 	"backend/pkg/utils"
+	"errors"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"strconv"
@@ -24,11 +25,43 @@ func NewUserHandler(userService service.UserService, userAuthService service.Use
 }
 
 func (h *UserHandler) LoginUser(ctx *fiber.Ctx) error {
-	return nil
-}
+	// request new data from http
+	request := new(models2.AuthLoginRequestDTO)
+	if err := ctx.BodyParser(request); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Code:   fiber.StatusBadRequest,
+			Status: utils.StatusBadRequest,
+			Errors: err,
+		})
+	}
+	// Validate the User struct
+	validate := validator.New()
+	if err := validate.Struct(request); err != nil {
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
+		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Code:   fiber.StatusBadRequest,
+			Status: utils.StatusBadRequest,
+			Errors: validationErrors,
+		})
+	}
 
-func (h *UserHandler) RefreshToken(ctx *fiber.Ctx) error {
-	return nil
+	// Call the CreateUser method of the userService
+	response, err := h.userAuthService.Login(request)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
+			Code:   fiber.StatusBadRequest,
+			Status: utils.StatusBadRequest,
+			Errors: err,
+		})
+	}
+
+	// return the response into JSON
+	return ctx.JSON(utils.Response{
+		Code:   fiber.StatusOK,
+		Status: utils.StatusOK,
+		Data:   response,
+	})
 }
 
 // CreateNewUser creates a new User.
@@ -49,17 +82,18 @@ func (h *UserHandler) CreateNewUser(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(request); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: utils.StatusBadRequest,
 			Errors: err,
 		})
 	}
 	// Validate the User struct
 	validate := validator.New()
 	if err := validate.Struct(request); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: utils.StatusBadRequest,
 			Errors: validationErrors,
 		})
 	}
@@ -69,7 +103,7 @@ func (h *UserHandler) CreateNewUser(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusConflict,
-			Status: "cannot insert duplicate values",
+			Status: utils.StatusConflict,
 			Errors: err,
 		})
 	}
@@ -77,7 +111,7 @@ func (h *UserHandler) CreateNewUser(ctx *fiber.Ctx) error {
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
 		Code:   fiber.StatusOK,
-		Status: "OK",
+		Status: utils.StatusOK,
 		Data:   response,
 	})
 }
@@ -111,17 +145,18 @@ func (h *UserHandler) UpdateExistingUser(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(request); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: utils.StatusBadRequest,
 			Errors: err,
 		})
 	}
 	// Validate the user struct
 	validate := validator.New()
 	if err := validate.Struct(request); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+			Status: utils.StatusBadRequest,
 			Errors: validationErrors,
 		})
 	}
@@ -131,7 +166,7 @@ func (h *UserHandler) UpdateExistingUser(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusNotFound,
-			Status: "service.user not found",
+			Status: utils.StatusNotFound,
 			Errors: err,
 		})
 	}
@@ -139,7 +174,7 @@ func (h *UserHandler) UpdateExistingUser(ctx *fiber.Ctx) error {
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
 		Code:   fiber.StatusOK,
-		Status: "OK",
+		Status: utils.StatusOK,
 		Data:   response,
 	})
 }

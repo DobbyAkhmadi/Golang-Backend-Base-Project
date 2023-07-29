@@ -29,12 +29,5 @@ DB:
   PASSWORD: "123456"
   DATABASE: "db_backend"
 
-sonar:
-  projectKey: Golang-Backend-Base-Project
-  projectName: Golang-Backend-Base-Project
-  projectVersion: 1.0
-  sources: .
-  language: go
-  sourceEncoding: UTF-8
-  host.url: http://localhost:9000
-  login: d1001350590e628c92a101f0d5d75335ee8581ee
+JWT:
+  TOKEN: "golangbaseproject"
