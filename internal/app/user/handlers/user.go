@@ -24,6 +24,18 @@ func NewUserHandler(userService service.UserService, userAuthService service.Use
 	}
 }
 
+// LoginUser Login a new User.
+// @Summary login a new User
+// @Description login User with the provided request data
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body models.AuthLoginRequestDTO true "Request body containing User login"
+// @Success 200 {object} utils.Response
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
+// @Security ApiKeyAuth
+// @Router /api/v1/user/auth/login [post]
 func (h *UserHandler) LoginUser(ctx *fiber.Ctx) error {
 	// request new data from http
 	request := new(models2.AuthLoginRequestDTO)
@@ -182,7 +194,7 @@ func (h *UserHandler) UpdateExistingUser(ctx *fiber.Ctx) error {
 // GetPaginationUser get pagination all user.
 // @Summary Get Pagination user
 // @Description Get All Paginated user with the provided request data
-// @Tags user
+// @Tags User
 // @Accept json
 // @Produce json
 // @Param page_index query int false "Page index" default(1)
@@ -251,7 +263,7 @@ func (h *UserHandler) GetPaginationUser(ctx *fiber.Ctx) error {
 // GetUserByID get a user by ID.
 // @Summary Get user by ID
 // @Description Get a user by the provided ID
-// @Tags user
+// @Tags User
 // @Accept json
 // @Produce json
 // @Param id path string true "user ID"
@@ -292,7 +304,7 @@ func (h *UserHandler) GetUserByID(ctx *fiber.Ctx) error {
 // DeleteUserByID delete a user by ID.
 // @Summary Delete user by ID
 // @Description Delete a user by the provided ID
-// @Tags user
+// @Tags User
 // @Accept json
 // @Produce json
 // @Param id path string true "user ID"

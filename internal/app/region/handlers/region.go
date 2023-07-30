@@ -20,7 +20,7 @@ func NewRegionHandler(regionService service.RegionService) *RegionHandler {
 // GetPaginationVillage get pagination all village.
 // @Summary Get Pagination village
 // @Description Get All Paginated village with the provided request data
-// @Tags Village
+// @Tags Region
 // @Accept json
 // @Produce json
 // @Param page_index query int false "Page index" default(1)
@@ -89,7 +89,7 @@ func (h *RegionHandler) GetPaginationVillage(ctx *fiber.Ctx) error {
 // GetPaginationProvince get pagination all province.
 // @Summary Get Pagination province
 // @Description Get All Paginated village with the provided request data
-// @Tags Province
+// @Tags Region
 // @Accept json
 // @Produce json
 // @Param page_index query int false "Page index" default(1)
@@ -158,7 +158,7 @@ func (h *RegionHandler) GetPaginationProvince(ctx *fiber.Ctx) error {
 // GetPaginationDistrict get pagination all district.
 // @Summary Get Pagination district
 // @Description Get All Paginated village with the provided request data
-// @Tags District
+// @Tags Region
 // @Accept json
 // @Produce json
 // @Param page_index query int false "Page index" default(1)
@@ -227,7 +227,7 @@ func (h *RegionHandler) GetPaginationDistrict(ctx *fiber.Ctx) error {
 // GetPaginationRegency get pagination all regency.
 // @Summary Get Pagination regency
 // @Description Get All Paginated village with the provided request data
-// @Tags Regency
+// @Tags Region
 // @Accept json
 // @Produce json
 // @Param page_index query int false "Page index" default(1)

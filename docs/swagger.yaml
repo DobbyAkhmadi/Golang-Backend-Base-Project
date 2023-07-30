@@ -1,5 +1,17 @@
 basePath: /api/v1
 definitions:
+  models.AuthLoginRequestDTO:
+    properties:
+      email:
+        description: Email of the user (required, must be a valid email address)
+        type: string
+      password:
+        description: Password of the user (required)
+        type: string
+    required:
+    - email
+    - password
+    type: object
   models.CreateProductRequestDTO:
     properties:
       description:
@@ -116,11 +128,20 @@ definitions:
       traceId:
         type: string
     type: object
+  utils.HeaderDto:
+    properties:
+      latency:
+        type: string
+      message:
+        type: string
+    type: object
   utils.Response:
     properties:
       code:
         type: integer
       data: {}
+      header:
+        $ref: '#/definitions/utils.HeaderDto'
       status:
         type: string
     type: object
@@ -190,6 +211,50 @@ paths:
       summary: Update existing User
       tags:
       - User
+  /api/v1/district:
+    get:
+      consumes:
+      - application/json
+      description: Get All Paginated village with the provided request data
+      parameters:
+      - default: 1
+        description: Page index
+        in: query
+        name: page_index
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Global search term
+        in: query
+        name: search
+        type: string
+      - description: Sort by field
+        in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Pagination district
+      tags:
+      - Region
   /api/v1/product:
     get:
       consumes:
@@ -362,6 +427,94 @@ paths:
       summary: Get Product by ID
       tags:
       - Product
+  /api/v1/province:
+    get:
+      consumes:
+      - application/json
+      description: Get All Paginated village with the provided request data
+      parameters:
+      - default: 1
+        description: Page index
+        in: query
+        name: page_index
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Global search term
+        in: query
+        name: search
+        type: string
+      - description: Sort by field
+        in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Pagination province
+      tags:
+      - Region
+  /api/v1/regency:
+    get:
+      consumes:
+      - application/json
+      description: Get All Paginated village with the provided request data
+      parameters:
+      - default: 1
+        description: Page index
+        in: query
+        name: page_index
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Global search term
+        in: query
+        name: search
+        type: string
+      - description: Sort by field
+        in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Pagination regency
+      tags:
+      - Region
   /api/v1/transaction:
     post:
       consumes:
@@ -468,7 +621,7 @@ paths:
       - ApiKeyAuth: []
       summary: Get Pagination user
       tags:
-      - user
+      - User
     post:
       consumes:
       - application/json
@@ -530,7 +683,7 @@ paths:
       - ApiKeyAuth: []
       summary: Delete user by ID
       tags:
-      - user
+      - User
     get:
       consumes:
       - application/json
@@ -560,7 +713,83 @@ paths:
       - ApiKeyAuth: []
       summary: Get user by ID
       tags:
-      - user
+      - User
+  /api/v1/user/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: login User with the provided request data
+      parameters:
+      - description: Request body containing User login
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.AuthLoginRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: login a new User
+      tags:
+      - Authentication
+  /api/v1/village:
+    get:
+      consumes:
+      - application/json
+      description: Get All Paginated village with the provided request data
+      parameters:
+      - default: 1
+        description: Page index
+        in: query
+        name: page_index
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Global search term
+        in: query
+        name: search
+        type: string
+      - description: Sort by field
+        in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Pagination village
+      tags:
+      - Region
 schemes:
 - http
 - https
