@@ -25,7 +25,10 @@ func (u *UserServiceImpl) GetPagination(paginate utils.SetPaginationDto) (utils.
 	if err != nil {
 		return utils.GetGlobalResponsePaginationDto{}, err
 	}
-	generate := utils.GetGlobalResponsePaginationDto{
+	generate := utils.GetGlobalResponsePaginationDto{Header: utils.HeaderDto{
+		Milliseconds: utils.GetCurrentLatency(),
+		Message:      "Request Successfully",
+	},
 		Code:      200,
 		Status:    "OK",
 		Data:      users,
