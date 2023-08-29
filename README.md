@@ -52,7 +52,7 @@
 
 - ✅ Using Service Repository Pattern
 - ✅ Using SonarCloud For Static Code Analysis
-- ✅ Using Basic Auth JWT/Oauth(Optional)
+- ✅ Using Basic Auth JWT/Oauth(Optional) RBAC (cashbin)
 - ✅ Using Basic CRUD
 - ✅ Using Reverse Proxy Nginx/Traefik
 - ✅ Using API Resources Naming Standard https://restfulapi.net/resource-naming/
