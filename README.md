@@ -50,7 +50,8 @@
 
 ### Features
 
-- ✅ Service Repository Pattern
+- ✅ Using Service Repository Pattern
+- ✅ Using SonarCloud For Static Code Analysis
 - ✅ Using Basic Auth JWT/Oauth(Optional)
 - ✅ Using Basic CRUD
 - ✅ Using Reverse Proxy Nginx/Traefik
