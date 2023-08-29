@@ -65,5 +65,6 @@
 - ✅ Using Domain Driven Design in some of services
 - ✅ Using MiniKube and Helm (monitor) Kubernetes for deployment
 - ✅ Using RabbitMQ / Kafka for message queueing.
+- ✅ Using Testify for unit test
 - ✅ Using Air for Live Reload
 - ✅ Using Swagger for API Documentation
