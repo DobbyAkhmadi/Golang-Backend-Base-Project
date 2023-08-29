@@ -54,7 +54,7 @@
 - ✅ Using SonarCloud For Static Code Analysis
 - ✅ Using Basic Auth JWT/Oauth(Optional) RBAC (cashbin)
 - ✅ Using Basic CRUD
-- ✅ Using Reverse Proxy Nginx/Traefik
+- ✅ Using Reverse Proxy Service Discovery Nginx/Traefik/Supervisord
 - ✅ Using API Resources Naming Standard https://restfulapi.net/resource-naming/
 - ✅ Using Graceful shutdown support.
 - ✅ Using OpenTelemetry for collection Distributed Tracing with using Jaeger and Zipkin
@@ -67,6 +67,6 @@
 - ✅ Using RabbitMQ / Kafka for message queueing.
 - ✅ Using Testify for unit test
 - ✅ Using Air for Live Reload
-- ✅ Using Circuit Breaker(gobreaker,Heimdall), Service Discovery(supervisord)
+- ✅ Using Circuit Breaker(gobreaker,Heimdall)
 - ✅ Using Google Cloud Platform/Cloudinary for uploading image/video and can do streaming
 - ✅ Using Swagger for API Documentation
