@@ -67,6 +67,6 @@
 - ✅ Using RabbitMQ / Kafka for message queueing.
 - ✅ Using Testify for unit test
 - ✅ Using Air for Live Reload
-- ✅ Using Circuit Breaker(gobreaker), Service Discovery(supervisord)
+- ✅ Using Circuit Breaker(gobreaker,Heimdall), Service Discovery(supervisord)
 - ✅ Using Google Cloud Platform/Cloudinary for uploading image/video and can do streaming
 - ✅ Using Swagger for API Documentation
