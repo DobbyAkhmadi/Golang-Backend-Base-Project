@@ -68,5 +68,5 @@
 - ✅ Using Testify for unit test
 - ✅ Using Air for Live Reload
 - ✅ Using Circuit Breaker(gobreaker), Service Discovery(supervisord)
-- ✅ Using Google Cloud Platform/Cloudinary for uploading image
+- ✅ Using Google Cloud Platform/Cloudinary for uploading image/video and can do streaming
 - ✅ Using Swagger for API Documentation
