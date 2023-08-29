@@ -50,8 +50,18 @@
 
 ### Features
 
-- [ ] Basic Auth JWT.
-- [X] Basic CRUD
-- [X] API Resources Naming Standard https://restfulapi.net/resource-naming/.
-- [X] Graceful shutdown support.
-- [X] Configuration defaults can be overwritten by env vars and flags.
+- ✅ Service Repository Pattern
+- ✅ Using Basic Auth JWT/Oauth(Optional)
+- ✅ Using Basic CRUD
+- ✅ Using Reverse Proxy Nginx/Traefik
+- ✅ Using API Resources Naming Standard https://restfulapi.net/resource-naming/
+- ✅ Using Graceful shutdown support.
+- ✅ Using OpenTelemetry for collection Distributed Tracing with using Jaeger and Zipkin
+- ✅ Using OpenTelemetry for collection Metrics with using Prometheus and Grafana
+- ✅ Using Zap and structured logging
+- ✅ Using Viper for configuration management
+- ✅ Using docker and docker-compose for deployment
+- ✅ Using Domain Driven Design in some of services
+- ✅ Using MiniKube and Helm (monitor) Kubernetes for deployment
+- ✅ Using Air for Live Reload
+- ✅ Using Swagger for API Documentation
