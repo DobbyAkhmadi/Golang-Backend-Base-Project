@@ -11,7 +11,7 @@ import (
 // SetupRoutesUser Define your routes here
 func SetupRoutesUser(app *fiber.App) {
 	// Create the handlers instances with their respective dependencies
-	// Create the repository and service dependencies
+	// Create the repository and products dependencies
 	userRepository := repository.NewUserRepository()
 	userService := service.NewUserService(&userRepository)
 	authService := service.NewUserAuthService(&userRepository)

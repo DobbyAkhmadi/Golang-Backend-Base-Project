@@ -1,4 +1,4 @@
-package seeders
+package seeds
 
 import (
 	"backend/internal/app/region/models"

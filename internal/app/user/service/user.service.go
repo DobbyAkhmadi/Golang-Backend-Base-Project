@@ -5,7 +5,7 @@ import (
 	"backend/pkg/utils"
 )
 
-// UserService represents a service for user-related operations.
+// UserService represents a products for user-related operations.
 type UserService interface {
 	Create(request *models2.CreateUserRequestDTO) (models2.GetUserResponseDTO, error)
 	Update(id string, request *models2.UpdateUserRequestDTO) (models2.GetUserResponseDTO, error)

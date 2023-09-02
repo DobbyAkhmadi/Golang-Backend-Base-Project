@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// Transaction Product represents a service.product entity.
+// Transaction Product represents a products.product entity.
 type Transaction struct {
 	utils.UUIDPrimaryKey
 	TransactionDate time.Time `json:"transaction_date,omitempty"`
@@ -26,7 +26,7 @@ type TransactionDetail struct {
 }
 
 // AutoMigrate migrates the Product table if it doesn't exist in the database.
-// It uses the provided GORM service.transaction (`tx`) to perform the migrations.
+// It uses the provided GORM products.transaction (`tx`) to perform the migrations.
 func (v *Transaction) AutoMigrate(tx *gorm.DB) (err error) {
 	if !tx.Migrator().HasTable(&v) {
 		err = tx.AutoMigrate(&v)
@@ -48,7 +48,7 @@ func (v *TransactionDetail) AutoMigrate(tx *gorm.DB) (err error) {
 }
 
 // BeforeCreate is a callback function that is executed before creating a new Product record in the database.
-// It uses the provided GORM service.transaction (`tx`) to perform any necessary operations.
+// It uses the provided GORM products.transaction (`tx`) to perform any necessary operations.
 // The function calls the BeforeCreate method of the UUIDPrimaryKey field in the Product struct.
 // This allows any custom logic or actions defined in the BeforeCreate method of the UUIDPrimaryKey field to be executed before creating the Product record.
 

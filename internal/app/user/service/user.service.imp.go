@@ -41,19 +41,19 @@ func (u *UserServiceImpl) GetPagination(paginate utils.SetPaginationDto) (utils.
 }
 
 func (u *UserServiceImpl) Delete(id string) (models2.GetUserResponseDTO, error) {
-	// Check if the service.user exists
+	// Check if the products.user exists
 	existingUser, err := u.userRepository.GetByID(id)
 	if err != nil {
 		return models2.GetUserResponseDTO{}, err
 	}
 
-	// Delete the service.users
+	// Delete the products.users
 	err = u.userRepository.Delete(id)
 	if err != nil {
 		return models2.GetUserResponseDTO{}, err
 	}
 
-	// Convert the deleted service.users to the response DTO
+	// Convert the deleted products.users to the response DTO
 	dto := convertToDTO(existingUser)
 
 	return dto, nil
@@ -115,13 +115,13 @@ func (u *UserServiceImpl) Update(id string, request *models2.UpdateUserRequestDT
 	return dto, nil
 }
 func (u *UserServiceImpl) GetUserByID(id string) (models2.GetUserResponseDTO, error) {
-	// Retrieve the service.user by ID from the repository
+	// Retrieve the products.user by ID from the repository
 	user, err := u.userRepository.GetByID(id)
 	if err != nil {
 		return models2.GetUserResponseDTO{}, err
 	}
 
-	// Convert the service.user to the response DTO format
+	// Convert the products.user to the response DTO format
 	dto := convertToDTO(user)
 
 	return dto, nil

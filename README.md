@@ -33,17 +33,18 @@
 - `cmd/*` - main application(s)
   - `/api/*` - list api routes
   - `/documentation/` - swagger routes
-- `config/` - configuration(s) (default values, env, flags) for application(s) subcommands and tests
-- `deployments/` - IaaS, PaaS, system and container orchestration deployment configurations and templates (docker-compose, kubernetes/helm, mesos, terraform, bosh).
+- `config/` - Configuration settings for your microservices.
+- `deployments/` - Holds deployment-related files, such as Dockerfiles and Kubernetes YAML files, for deploying your microservices.
 - `docs/*` - documentation swagger
-- `internal/app/`  -define interfaces and implements business-logic
+- `internal/app/`  - Contains business logic, including use cases, entities, repositories, and services.
     - `handlers/` - list handlers controller
     - `models/` - list models
     - `repository/` - list repository
     - `routes/` - list routes
     -  `service/` - list services
-- `pkg/*` - helper packages 3rd party library, not related to architecture and business-logic
-- `platform/*` - database migration , cache
+- `pkg/*` - This directory contains packages that can be shared between microservices if needed. These packages should contain reusable code and functionalities.
+- `platform/*` - database migration , cache , seeders 
+- `scripts/*` Utility scripts for tasks like database initialization, building, or deploying the microservices.
 - `log/*` - logging application
 - `test/*` - list unit testing
 - `third_party/*` - list 3rd party

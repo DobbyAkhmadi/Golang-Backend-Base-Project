@@ -51,7 +51,7 @@ func (s *TransactionServiceImpl) GetTransactionByID(id string) (*models.GetTrans
 }
 
 func (s *TransactionServiceImpl) CreateTransaction(transaction *models.CreateTransactionDTO) (*models.GetTransactionDTO, error) {
-	// Perform any additional validation or business logic before creating the service.transaction
+	// Perform any additional validation or business logic before creating the products.transaction
 
 	head := models.Transaction{
 		TransactionDate: time.Now(),

@@ -142,14 +142,14 @@ func (h *UserHandler) CreateNewUser(ctx *fiber.Ctx) error {
 // @Security ApiKeyAuth
 // @Router /api/v1/User [put]
 func (h *UserHandler) UpdateExistingUser(ctx *fiber.Ctx) error {
-	// Get the service.user ID from the request parameters
+	// Get the products.user ID from the request parameters
 	id := ctx.Params("id")
 
-	// Validate the service.user ID
+	// Validate the products.user ID
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid service.user ID",
+			"error": "Invalid products.user ID",
 		})
 	}
 	// request new data from http
@@ -246,7 +246,7 @@ func (h *UserHandler) GetPaginationUser(ctx *fiber.Ctx) error {
 		SortBy:       sortBy,
 	}
 
-	// Retrieve the paginated user from the service
+	// Retrieve the paginated user from the products
 	response, err := h.userService.GetPagination(pagination)
 	if err != nil {
 		// Return a response with an error message
@@ -273,18 +273,18 @@ func (h *UserHandler) GetPaginationUser(ctx *fiber.Ctx) error {
 // @Security ApiKeyAuth
 // @Router /api/v1/user/{id} [get]
 func (h *UserHandler) GetUserByID(ctx *fiber.Ctx) error {
-	// Get the service.user ID from the request parameters
+	// Get the products.user ID from the request parameters
 	id := ctx.Params("id")
 
-	// Validate the service.user ID
+	// Validate the products.user ID
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid service.user ID",
+			"error": "Invalid products.user ID",
 		})
 	}
 
-	// Retrieve the service.user by ID from the service
+	// Retrieve the products.user by ID from the products
 	user, err := h.userService.GetUserByID(id)
 	if err != nil {
 		// Return a response with an error message
@@ -314,18 +314,18 @@ func (h *UserHandler) GetUserByID(ctx *fiber.Ctx) error {
 // @Security ApiKeyAuth
 // @Router /api/v1/user/{id} [delete]
 func (h *UserHandler) DeleteUserByID(ctx *fiber.Ctx) error {
-	// Get the service.user ID from the request parameters
+	// Get the products.user ID from the request parameters
 	id := ctx.Params("id")
 
-	// Validate the service.user ID
+	// Validate the products.user ID
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid service.user ID",
+			"error": "Invalid products.user ID",
 		})
 	}
 
-	// Delete the service.user by ID using the service
+	// Delete the products.user by ID using the products
 	user, err := h.userService.Delete(id)
 	if err != nil {
 		// Return a response with an error message
