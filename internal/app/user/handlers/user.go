@@ -70,9 +70,9 @@ func (h *UserHandler) LoginUser(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: utils.StatusOK,
-		Data:   response,
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: response,
 	})
 }
 
@@ -122,9 +122,9 @@ func (h *UserHandler) CreateNewUser(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: utils.StatusOK,
-		Data:   response,
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: response,
 	})
 }
 
@@ -185,9 +185,9 @@ func (h *UserHandler) UpdateExistingUser(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: utils.StatusOK,
-		Data:   response,
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: response,
 	})
 }
 
@@ -295,9 +295,9 @@ func (h *UserHandler) GetUserByID(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   user,
+		Code:    fiber.StatusOK,
+		Status:  "OK",
+		Payload: user,
 	})
 }
 
@@ -336,8 +336,8 @@ func (h *UserHandler) DeleteUserByID(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   user,
+		Code:    fiber.StatusOK,
+		Status:  "OK",
+		Payload: user,
 	})
 }

@@ -2,16 +2,17 @@ package service
 
 import (
 	"backend/internal/app/product/models"
-	"backend/internal/app/product/repository"
+	repo "backend/internal/app/product/repository"
 	"backend/pkg/utils"
+	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
 
 type ProductServiceImpl struct {
-	productRepository repository.ProductRepository
+	productRepository repo.IProductRepository
 }
 
-func NewProductService(productRepository *repository.ProductRepository) *ProductServiceImpl {
+func NewProductService(productRepository *repo.IProductRepository) *ProductServiceImpl {
 	return &ProductServiceImpl{
 		productRepository: *productRepository,
 	}
@@ -27,10 +28,10 @@ func (s *ProductServiceImpl) GetPagination(paginate utils.SetPaginationDto) (uti
 	generate := utils.GetGlobalResponsePaginationDto{
 		Header: utils.HeaderDto{
 			Milliseconds: utils.GetCurrentLatency(),
-			Message:      "Request Successfully",
+			Message:      utils.StatusOK,
 		},
-		Code:      200,
-		Status:    "OK",
+		Code:      fiber.StatusOK,
+		Status:    utils.StatusOK,
 		Data:      products,
 		PageIndex: paginate.PageIndex,
 		PageSize:  paginate.PageSize,
@@ -38,6 +39,25 @@ func (s *ProductServiceImpl) GetPagination(paginate utils.SetPaginationDto) (uti
 	}
 
 	return generate, nil
+}
+
+func (s *ProductServiceImpl) Restore(id string) (models.GetProductResponseDTO, error) {
+	// Check if the service.product exists
+	existingProduct, err := s.productRepository.GetByID(id)
+	if err != nil {
+		return models.GetProductResponseDTO{}, err
+	}
+
+	// Restore the service.product
+	err = s.productRepository.Restore(id)
+	if err != nil {
+		return models.GetProductResponseDTO{}, err
+	}
+
+	// Convert the deleted service.product to the response DTO
+	dto := convertToDTO(existingProduct)
+
+	return dto, nil
 }
 
 func (s *ProductServiceImpl) Delete(id string) (models.GetProductResponseDTO, error) {
@@ -60,9 +80,6 @@ func (s *ProductServiceImpl) Delete(id string) (models.GetProductResponseDTO, er
 }
 
 func (s *ProductServiceImpl) Create(request *models.CreateProductRequestDTO) (models.GetProductResponseDTO, error) {
-	// Add business logic for creating a Product
-	// Validate the Product, perform any necessary transformations, and interact with the repository
-	// Return any relevant errors
 
 	newComp := new(models.Product)
 	newComp.ID = uuid.New()
@@ -71,7 +88,7 @@ func (s *ProductServiceImpl) Create(request *models.CreateProductRequestDTO) (mo
 	newComp.Description = request.Description
 
 	// return error when insert duplicate values
-	result, err := s.productRepository.Save(newComp)
+	result, err := s.productRepository.Upsert(newComp)
 	if err != nil {
 		return models.GetProductResponseDTO{}, err
 	}
@@ -82,11 +99,7 @@ func (s *ProductServiceImpl) Create(request *models.CreateProductRequestDTO) (mo
 }
 
 func (s *ProductServiceImpl) Update(id string, request *models.UpdateProductRequestDTO) (models.GetProductResponseDTO, error) {
-	// Add business logic for creating a Product
-	// Validate the Product, perform any necessary transformations, and interact with the repository
-	// Return any relevant errors
 
-	// check existing data
 	updateProduct, err := s.productRepository.GetByID(id)
 	if err != nil {
 		return models.GetProductResponseDTO{}, err
@@ -96,7 +109,7 @@ func (s *ProductServiceImpl) Update(id string, request *models.UpdateProductRequ
 	updateProduct.Stock = request.Stock
 
 	// return error when insert duplicate values
-	result, err := s.productRepository.Update(updateProduct)
+	result, err := s.productRepository.Upsert(updateProduct)
 	if err != nil {
 		return models.GetProductResponseDTO{}, err
 	}

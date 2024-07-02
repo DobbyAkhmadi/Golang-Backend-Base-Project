@@ -33,21 +33,20 @@
 - `cmd/*` - main application(s)
   - `/api/*` - list api routes
   - `/documentation/` - swagger routes
-- `config/` - Configuration settings for your microservices.
+- `config/` - Configuration all settings for your microservices.
 - `deployments/` - Holds deployment-related files, such as Dockerfiles and Kubernetes YAML files, for deploying your microservices.
 - `docs/*` - documentation swagger
-- `internal/app/`  - Contains business logic, including use cases, entities, repositories, and services.
-    - `handlers/` - list handlers controller
+- `internal/app/{AppName}`  - Contains business logic, including use cases, entities, repositories, and services.
+    - `handlers/` - list handlers
     - `models/` - list models
     - `repository/` - list repository
     - `routes/` - list routes
-    -  `service/` - list services
+    - `service/` - list services
 - `pkg/*` - This directory contains packages that can be shared between microservices if needed. These packages should contain reusable code and functionalities.
-- `platform/*` - database migration , cache , seeders 
+- `platform/*` - database migration , cache
 - `scripts/*` Utility scripts for tasks like database initialization, building, or deploying the microservices.
 - `log/*` - logging application
-- `test/*` - list unit testing
-- `third_party/*` - list 3rd party
+- `third_party/*` - list 3rd party communication
 
 ### Features
 

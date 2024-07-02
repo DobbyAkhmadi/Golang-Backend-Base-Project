@@ -11,6 +11,7 @@ type Product struct {
 	Name                 string `json:"name,omitempty"`        // Name of the service.product
 	Description          string `json:"description,omitempty"` // Description of the service.product (optional)
 	Stock                int64  `json:"stock"`                 // Stock the service.product
+	IsActive             bool   `json:"is_active"`             // IsActive the service.product
 	utils.ModelTimestamp        // Embeds the ModelTimestamp struct for timestamp fields
 }
 

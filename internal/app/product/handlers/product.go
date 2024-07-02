@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"backend/internal/app/product/models"
-	"backend/internal/app/product/service"
+	srv "backend/internal/app/product/service"
 	"backend/pkg/utils"
 	"errors"
 	"github.com/go-playground/validator/v10"
@@ -11,10 +11,10 @@ import (
 )
 
 type ProductHandler struct {
-	productService service.ProductService
+	productService srv.IProductService
 }
 
-func NewProductHandler(productService service.ProductService) *ProductHandler {
+func NewProductHandler(productService srv.IProductService) *ProductHandler {
 	return &ProductHandler{
 		productService: productService,
 	}
@@ -38,7 +38,7 @@ func (h *ProductHandler) CreateNewProduct(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(request); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request | CreateProductRequestDTO",
+			Status: utils.StatusBadRequest,
 			Errors: err,
 		})
 	}
@@ -49,7 +49,7 @@ func (h *ProductHandler) CreateNewProduct(ctx *fiber.Ctx) error {
 		errors.As(err, &validationErrors)
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request | Validate Process",
+			Status: utils.StatusBadRequest,
 			Errors: validationErrors,
 		})
 	}
@@ -59,16 +59,16 @@ func (h *ProductHandler) CreateNewProduct(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusConflict,
-			Status: "cannot insert duplicate values",
+			Status: utils.StatusConflict,
 			Errors: err,
 		})
 	}
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   response,
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: response,
 	})
 }
 
@@ -93,7 +93,7 @@ func (h *ProductHandler) UpdateExistingProduct(ctx *fiber.Ctx) error {
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid service.product ID",
+			"error": utils.StatusBadRequest,
 		})
 	}
 	// request new data from http
@@ -101,7 +101,7 @@ func (h *ProductHandler) UpdateExistingProduct(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(request); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request | UpdateProductRequestDTO",
+			Status: utils.StatusBadRequest,
 			Errors: err,
 		})
 	}
@@ -112,7 +112,7 @@ func (h *ProductHandler) UpdateExistingProduct(ctx *fiber.Ctx) error {
 		errors.As(err, &validationErrors)
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request | Validate Process",
+			Status: utils.StatusBadRequest,
 			Errors: validationErrors,
 		})
 	}
@@ -122,16 +122,16 @@ func (h *ProductHandler) UpdateExistingProduct(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(utils.ErrorResponse{
 			Code:   fiber.StatusNotFound,
-			Status: "service.product not found",
+			Status: utils.StatusNotFound,
 			Errors: err,
 		})
 	}
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   response,
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: response,
 	})
 }
 
@@ -161,7 +161,7 @@ func (h *ProductHandler) GetPaginationProduct(ctx *fiber.Ctx) error {
 	if pageIndex == "" || pageSize == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required query parameters",
+			"error": utils.MissingRequiredParams,
 		})
 	}
 
@@ -170,7 +170,7 @@ func (h *ProductHandler) GetPaginationProduct(ctx *fiber.Ctx) error {
 	if err != nil || pageIndexInt < 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page index | paginate product",
+			"error": utils.InvalidPageIndex,
 		})
 	}
 
@@ -178,7 +178,7 @@ func (h *ProductHandler) GetPaginationProduct(ctx *fiber.Ctx) error {
 	if err != nil || pageSizeInt <= 0 {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid page size | paginate product",
+			"error": utils.InvalidPageSize,
 		})
 	}
 
@@ -224,7 +224,7 @@ func (h *ProductHandler) GetProductByID(ctx *fiber.Ctx) error {
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid ID | Get Product ID",
+			"error": utils.StatusBadRequest,
 		})
 	}
 
@@ -239,9 +239,9 @@ func (h *ProductHandler) GetProductByID(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   product,
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: product,
 	})
 }
 
@@ -265,7 +265,7 @@ func (h *ProductHandler) DeleteProductByID(ctx *fiber.Ctx) error {
 	if id == "" {
 		// Return a response with a validation error
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid ID | Delete Product ID",
+			"error": utils.StatusBadRequest,
 		})
 	}
 
@@ -280,8 +280,49 @@ func (h *ProductHandler) DeleteProductByID(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   product,
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: product,
+	})
+}
+
+// RestoreProductByID delete a product by ID.
+// @Summary Restore Product by ID
+// @Description Restore a product by the provided ID
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param id path string true "Product ID"
+// @Success 200 {object} utils.Response
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 404 {object} utils.ErrorResponse
+// @Security ApiKeyAuth
+// @Router /api/v1/product/{id} [patch]
+func (h *ProductHandler) RestoreProductByID(ctx *fiber.Ctx) error {
+	// Get the service.product ID from the request parameters
+	id := ctx.Params("id")
+
+	// Validate the service.product ID
+	if id == "" {
+		// Return a response with a validation error
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": utils.StatusBadRequest,
+		})
+	}
+
+	// Restore the service.product by ID using the service
+	product, err := h.productService.Restore(id)
+	if err != nil {
+		// Return a response with an error message
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// return the response into JSON
+	return ctx.JSON(utils.Response{
+		Code:    fiber.StatusOK,
+		Status:  utils.StatusOK,
+		Payload: product,
 	})
 }

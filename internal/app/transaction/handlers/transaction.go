@@ -55,9 +55,9 @@ func (h *TransactionHandler) CreateTransaction(c *fiber.Ctx) error {
 
 	// return the response into JSON
 	return c.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   data,
+		Code:    fiber.StatusOK,
+		Status:  "OK",
+		Payload: data,
 	})
 }
 
@@ -150,8 +150,8 @@ func (h *TransactionHandler) GetTransactionById(ctx *fiber.Ctx) error {
 
 	// return the response into JSON
 	return ctx.JSON(utils.Response{
-		Code:   fiber.StatusOK,
-		Status: "OK",
-		Data:   data,
+		Code:    fiber.StatusOK,
+		Status:  "OK",
+		Payload: data,
 	})
 }

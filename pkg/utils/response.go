@@ -1,15 +1,18 @@
 package utils
 
-var StatusBadRequest = "Bad Request"
-var StatusNotFound = "Not Found"
-var StatusConflict = "Conflict Data"
-var StatusOK = "OK"
-var StatusUnauthorized = "Unauthorized"
-var StatusForbidden = "Forbidden"
+const StatusBadRequest = "Bad Request"
+const StatusNotFound = "Not Found"
+const StatusConflict = "Conflict Data"
+const StatusOK = "OK"
+const StatusUnauthorized = "Unauthorized"
+
+const InvalidPageIndex = "Invalid Page Index"
+const InvalidPageSize = "Invalid Page Size"
+const MissingRequiredParams = "Missing required query parameters"
 
 type Response struct {
-	Header HeaderDto   `json:"header"`
-	Code   int         `json:"code,omitempty"`
-	Status string      `json:"status,omitempty"`
-	Data   interface{} `json:"data,omitempty"`
+	Header  HeaderDto   `json:"header"`
+	Code    int         `json:"code,omitempty"`
+	Status  string      `json:"status,omitempty"`
+	Payload interface{} `json:"payload,omitempty"`
 }

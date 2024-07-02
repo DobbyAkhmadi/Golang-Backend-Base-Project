@@ -8,18 +8,13 @@ import (
 	"gorm.io/gorm"
 )
 
-// ProductRepository is an interface that defines the contract for accessing and manipulating Product data.
-type ProductRepository interface {
-	// Save basic crud
-	Save(model *models.Product) (*models.Product, error)
-	Update(model *models.Product) (*models.Product, error)
+// IProductRepository is an interface that defines the contract for accessing and manipulating Product data.
+type IProductRepository interface {
+	Upsert(model *models.Product) (*models.Product, error)
 	GetByID(id string) (*models.Product, error)
 	Delete(id string) error
+	Restore(id string) error
 	GetPagination(paginate utils.SetPaginationDto) ([]*models.Product, int64, error)
-
-	// BulkDelete custom query include array data
-	BulkDelete(id []string) error
-	GetByColumns(columns []string, values []string) ([]*models.Product, error)
 }
 
 // dbProductRepository implements the ProductRepository interface.
@@ -27,16 +22,23 @@ type dbProductRepository struct {
 	connection *gorm.DB
 }
 
+func (db dbProductRepository) Upsert(model *models.Product) (*models.Product, error) {
+	if err := db.connection.Save(model).Error; err != nil {
+		return nil, err
+	}
+
+	return model, nil
+}
+
 func (db dbProductRepository) Delete(id string) error {
-	product := &models.Product{}
-	if err := db.connection.Where("id = ?", id).Delete(product).Error; err != nil {
+	if err := db.connection.Where("id = ?", id).Update("is_active = 3", id).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (db dbProductRepository) BulkDelete(id []string) error {
-	if err := db.connection.Where("id IN (?)", id).Delete(&models.Product{}).Error; err != nil {
+func (db dbProductRepository) Restore(id string) error {
+	if err := db.connection.Where("id = ?", id).Update("is_active = 1", id).Error; err != nil {
 		return err
 	}
 	return nil
@@ -81,32 +83,15 @@ func (db dbProductRepository) GetPagination(paginate utils.SetPaginationDto) ([]
 	return myModel, total, nil
 }
 
-func (db dbProductRepository) GetByColumns(columns []string, values []string) ([]*models.Product, error) {
-	var products []*models.Product
-	query := db.connection
-
-	// Build the query dynamically based on the specified columns and values
-	for i := 0; i < len(columns); i++ {
-		query = query.Where(columns[i]+" = ?", values[i])
-	}
-
-	// Execute the query and retrieve the matching product
-	if err := query.Find(&products).Error; err != nil {
-		return nil, err
-	}
-
-	return products, nil
-}
-
 // NewProductRepository creates a new instance of the ProductRepository.
 // It performs necessary database migrations and generates fake data if in the development environment.
-func NewProductRepository() ProductRepository {
+func NewProductRepository() IProductRepository {
 	// Check if the database connection is already established
 	if database.DB == nil {
 		// Connect to the database
-		database, _ := database.Connect()
-		if database != nil {
-			log.Error(database)
+		_db, _ := database.Connect()
+		if _db != nil {
+			log.Error(_db)
 		}
 	}
 
@@ -122,20 +107,4 @@ func NewProductRepository() ProductRepository {
 	return &dbProductRepository{
 		connection: database.DB,
 	}
-}
-
-// Save saves a new service.product into the database.
-func (db dbProductRepository) Save(model *models.Product) (*models.Product, error) {
-	if err := db.connection.Create(model).Error; err != nil {
-		return nil, err
-	}
-
-	return model, nil
-}
-
-func (db dbProductRepository) Update(model *models.Product) (*models.Product, error) {
-	if err := db.connection.Save(model).Error; err != nil {
-		return nil, err
-	}
-	return model, nil
 }
